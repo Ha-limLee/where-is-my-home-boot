@@ -24,6 +24,12 @@
 		user_password = #{userpwd}
 	</select>
 
+	<select id="getUserInfo" parameterType="string" resultMap="userDetail">
+		select *
+		from member
+		where user_id = #{userId}
+	</select>
+	
 	<insert id="joinUser" parameterType="user">
 		insert into member (user_id,
 		user_name, user_password, address, phone_number, authority)

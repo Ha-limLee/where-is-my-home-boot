@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User getUserInfo(String userId) throws Exception {
+		return userMapper.getUserInfo(userId);
+	}
+	
+	@Override
 	public void updateUser(User user) throws Exception {
 		userMapper.updateUser(user);
 	}
