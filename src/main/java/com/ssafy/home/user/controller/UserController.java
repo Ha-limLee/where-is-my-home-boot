@@ -36,10 +36,16 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping
-	public ResponseEntity<User> getUserInfo() {
-
-		return null;
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<?> getUserInfo(@PathVariable("userId") String userId) {
+		
+		try {
+			User user = userService.getUserInfo(userId);
+			return new ResponseEntity<User> (user, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("getUserDetail Fail", HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 
 	@PostMapping("/login")
@@ -78,7 +84,7 @@ public class UserController {
 		session.invalidate();
 		return new ResponseEntity<String>("logout Ok", HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody User user) {
 		System.out.println("/join-create");
