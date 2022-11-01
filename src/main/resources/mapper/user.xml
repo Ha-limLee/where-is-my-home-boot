@@ -37,4 +37,10 @@
 		set user_name = #{userName}, address = #{address}, phone_number = #{phoneNumber} 
 		where user_id = #{userId}
 	</update>
+	
+	<delete id="deleteUser" parameterType="string">
+		delete
+		from member
+		where user_id = #{userId}
+	</delete>
 </mapper>

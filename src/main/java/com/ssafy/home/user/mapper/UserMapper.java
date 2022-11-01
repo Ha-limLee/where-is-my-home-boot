@@ -15,4 +15,6 @@ public interface UserMapper {
 	void joinUser(User user) throws SQLException;
 
 	void updateUser(User user) throws SQLException;
+
+	void deleteUser(String userId) throws SQLException;
 }

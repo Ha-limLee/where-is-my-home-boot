@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,7 +78,7 @@ public class UserController {
 		session.invalidate();
 		return new ResponseEntity<String>("logout Ok", HttpStatus.OK);
 	}
-
+	
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody User user) {
 		System.out.println("/join-create");
@@ -102,4 +104,17 @@ public class UserController {
 			return new ResponseEntity<String>("update Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
+	
+	@DeleteMapping("/remove/{userId}")
+	public ResponseEntity<?> remove(@PathVariable("userId") String userId) {
+		
+		try {
+			userService.deleteUser(userId);
+			return new ResponseEntity<String>("delete OK", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("delete Fail", HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
+	
 }

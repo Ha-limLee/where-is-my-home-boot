@@ -10,4 +10,6 @@ public interface UserService {
 	void joinUser(User user) throws Exception;
 
 	void updateUser(User user) throws Exception;
+
+	void deleteUser(String userId) throws Exception;
 }
