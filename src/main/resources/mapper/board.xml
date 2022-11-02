@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.home.board.mapper.BoardMapper">
+
+
+	<resultMap type="notice" id="board">
+		<result column="article_no" property="articleNo" />
+		<result column="user_id" property="userId" />
+		<result column="subject" property="subject" />
+		<result column="hit" property="hit" />
+	</resultMap>
+
+	<resultMap type="notice" id="boardDetail" extends="board">
+		<result column="content" property="content" />
+		<result column="register_time" property="registerTime" />
+	</resultMap>
+	
+	<select id="getBoardList" resultMap="board">
+		select article_no, user_id, subject, hit
+		from notice
+	</select>
+	
+	<select id="getNoticeDetail" parameterType="int" resultMap="boardDetail">
+		select *
+		from notice
+		where article_no = #{num}
+	</select>
+	
+	<update id="increaseHit" parameterType="int">
+		update notice
+		set hit = hit+1
+		where artile_No = #{num}
+	</update>
+	
+	<insert id="addNotice" parameterType="notice">
+		insert into notice(user_id, subject, content, hit, register_time)
+		values (#{userId}, #{subject}, #{content}, 0, now())
+	</insert>
+</mapper>

@@ -128,7 +128,7 @@ public class UserController {
 	}
 	
 	@ApiOperation(value = "회원정보삭제", notes = "회원정보를 삭제합니다.")
-	@DeleteMapping("/remove/{userId}")
+	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> remove(@PathVariable("userId") String userId) {
 		
 		try {
