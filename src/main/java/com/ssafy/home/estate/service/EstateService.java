@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
+import com.ssafy.home.estate.dto.DongCode;
 
 public interface EstateService {
 
@@ -15,6 +16,6 @@ public interface EstateService {
 
 	List<String> getDongList(Map<String,String> map) throws Exception;
 
-	void getInterestLocation(String userId) throws Exception;
+	List<DongCode> getInterestLocation(String userId) throws Exception;
 
 }

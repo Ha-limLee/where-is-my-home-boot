@@ -19,8 +19,12 @@ import com.ssafy.home.board.entity.Notice;
 import com.ssafy.home.board.service.BoardService;
 import com.ssafy.home.board.service.BoardServiceImpl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/board")
+@Api("공지사항 게시판 컨트롤러 API")
 public class BoardController {
 
 	private final BoardService boardService;
@@ -30,6 +34,7 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 
+	@ApiOperation(value = "공지사항 전체 조회", notes = "공지사항 글 전체 조회 API.")
 	@GetMapping
 	public ResponseEntity<?> getNoticeList() {
 		try {
@@ -41,6 +46,7 @@ public class BoardController {
 		}
 	}
 
+	@ApiOperation(value = "공지사항 글 하나 조회", notes = "공지사항 글 하나만 조회 API.")
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
@@ -53,6 +59,7 @@ public class BoardController {
 		}
 	}
 
+	@ApiOperation(value = "공지사항 글 추가", notes = "공지사항 글 추가 API.")
 	@PostMapping
 	public ResponseEntity<?> addNotice(@RequestBody Notice notice) {
 		try {
@@ -64,6 +71,7 @@ public class BoardController {
 		}
 	}
 
+	@ApiOperation(value = "공지사항 글 수정", notes = "공지사항 글 수정 API.")
 	@PutMapping("/{noticeNum}")
 	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Notice notice) {
 
@@ -76,6 +84,7 @@ public class BoardController {
 		}
 	}
 
+	@ApiOperation(value = "공지사항 글 삭제", notes = "공지사항 글 삭제 API.")
 	@DeleteMapping("/{noticeNum}")
 	public ResponseEntity<?> deleteNotice(@PathVariable("noticeNum") String number) {
 
