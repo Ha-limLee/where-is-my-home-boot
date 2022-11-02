@@ -44,6 +44,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@ApiOperation(value = "로그인", notes = "로그인에 대한  API.")
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Map<String, String> map, HttpSession session,
 			HttpServletResponse response) {
@@ -75,6 +76,7 @@ public class UserController {
 		}
 	}
 
+	@ApiOperation(value = "로그아웃", notes = "로그아웃에 대한 정보.")
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		session.invalidate();

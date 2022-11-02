@@ -17,11 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.home.board.entity.Notice;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
+import com.ssafy.home.estate.dto.DongCode;
 import com.ssafy.home.estate.service.EstateService;
 import com.ssafy.home.user.entity.User;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/estate")
+@Api("부동산 컨트롤러 API")
 public class EstateController {
 
 	private final EstateService estateService;
@@ -32,6 +37,7 @@ public class EstateController {
 		this.estateService = estateService;
 	}
 	
+	@ApiOperation(value = "옵션으로 아파트 거래 정보 조회", notes = "[필수]시, 군(구) [선택] 동, 년, 월, 아파트 이름 검색어로 아파트 거래정보 조회.")
 	@GetMapping("/apartment")
 	public ResponseEntity<?> getAptList(@RequestParam Map<Object, Object> option) {
 		
@@ -51,6 +57,7 @@ public class EstateController {
 	}
 	
 	// 전체 시 목록 가져오기
+	@ApiOperation(value = "대한민국 시 목록 조회", notes = "대한민국 시 목록을 전체 조회합니다.")
 	@GetMapping("/si")
 	public ResponseEntity<?> getSiList() {
 		
@@ -64,6 +71,7 @@ public class EstateController {
 		}
 	}
 	
+	@ApiOperation(value = "시 하나에 포함된 전체 구(군) 목록 조회", notes = "서울에 동작구, 도봉구 ... 처럼 시 하나에 전체 구 를 조회합니다")
 	@GetMapping("/gugun")
 	public ResponseEntity<?> getGunGuList(@RequestParam String si) {
 		
@@ -77,6 +85,7 @@ public class EstateController {
 		}
 	}
 	
+	@ApiOperation(value = "시-구(군)에 해당하는 전체 동 조회", notes = "전체 동 리스트를 조회합니다")
 	@GetMapping("/dong")
 	public ResponseEntity<?> getdongList(@RequestParam Map<String,String> map) {
 		
@@ -89,19 +98,20 @@ public class EstateController {
 		}
 	}
 	
+	@ApiOperation(value = "유저가 DB에 등록한 관심 지역 목록을 전부 가져옵니다", notes = "관심지역 전체 목록 조회 api")
+	@GetMapping("/interest")
 	public ResponseEntity<?> getInterestLocation(HttpSession session) {
 		
 		User user = (User)session.getAttribute("userinfo");
 		String userId = user.getUserId();
 		
 		try {
-			estateService.getInterestLocation(userId);
+			List<DongCode> dongList = estateService.getInterestLocation(userId);
+			return new ResponseEntity<List<DongCode>>(dongList, HttpStatus.OK);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return new ResponseEntity<String>("get dongList Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
-		
-		return null;
 	}
 	
 	

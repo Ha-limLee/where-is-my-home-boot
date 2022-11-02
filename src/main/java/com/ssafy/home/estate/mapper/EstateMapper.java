@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
+import com.ssafy.home.estate.dto.DongCode;
 
 @Mapper
 public interface EstateMapper {
@@ -18,5 +19,7 @@ public interface EstateMapper {
 	List<String> getGuGunList(String si) throws SQLException;
 
 	List<String> getDongList(Map<String, String> option) throws SQLException;
+
+	List<DongCode> getInterestLocation(String userId) throws SQLException;
 
 }
