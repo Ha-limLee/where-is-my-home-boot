@@ -34,7 +34,7 @@
 		update notice
 		set hit =
 		hit+1
-		where artile_No = #{num}
+		where article_no = #{num}
 	</update>
 
 	<insert id="addNotice" parameterType="notice">
