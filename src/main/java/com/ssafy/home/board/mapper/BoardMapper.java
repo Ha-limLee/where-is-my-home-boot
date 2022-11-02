@@ -21,4 +21,6 @@ public interface BoardMapper {
 
 	void updateNotice(Map<Object, Object> map) throws SQLException;
 
+	void deleteNotice(int num) throws SQLException;
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ import com.ssafy.home.board.service.BoardServiceImpl;
 public class BoardController {
 
 	private final BoardService boardService;
-	
+
 	@Autowired
 	public BoardController(BoardServiceImpl boardService) {
 		this.boardService = boardService;
@@ -39,7 +40,7 @@ public class BoardController {
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
@@ -51,7 +52,7 @@ public class BoardController {
 			return new ResponseEntity<String>("get Detail Notice Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<?> addNotice(@RequestBody Notice notice) {
 		try {
@@ -62,10 +63,10 @@ public class BoardController {
 			return new ResponseEntity<String>("addNotice Faile", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
 	@PutMapping("/{noticeNum}")
 	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Notice notice) {
-		
+
 		try {
 			boardService.updateNotice(number, notice);
 			return new ResponseEntity<String>("updateNotice OK", HttpStatus.OK);
@@ -73,5 +74,18 @@ public class BoardController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("updateNotice Fail", HttpStatus.OK);
 		}
+	}
+
+	@DeleteMapping("/{noticeNum}")
+	public ResponseEntity<?> deleteNotice(@PathVariable("noticeNum") String number) {
+
+		try {
+			boardService.deleteNotice(number);
+			return new ResponseEntity<String>("deleteNotice OK", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("deleteNotice Fail", HttpStatus.OK);
+		}
+
 	}
 }
