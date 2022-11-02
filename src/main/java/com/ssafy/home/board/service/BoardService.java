@@ -11,4 +11,6 @@ public interface BoardService {
 	public Notice getNoticeDetail(String number) throws Exception;
 
 	public void addNotice(Notice notice) throws Exception;
+
+	public void updateNotice(String number, Notice notice) throws Exception;
 }

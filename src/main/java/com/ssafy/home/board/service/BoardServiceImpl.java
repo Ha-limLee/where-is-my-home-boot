@@ -1,7 +1,9 @@
 package com.ssafy.home.board.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void addNotice(Notice notice) throws Exception {
 		boardMapper.addNotice(notice);
+	}
+
+	@Override
+	public void updateNotice(String number, Notice notice) throws Exception {
+		int num = Integer.parseInt(number);
+		Map<Object, Object> map = new HashMap<>();
+		map.put("num", num);
+		map.put("subject", notice.getSubject());
+		map.put("content", notice.getContent());
+		boardMapper.updateNotice(map);
 	}
 }

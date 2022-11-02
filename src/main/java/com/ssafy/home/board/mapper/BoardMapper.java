@@ -2,6 +2,7 @@ package com.ssafy.home.board.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,6 +17,8 @@ public interface BoardMapper {
 
 	void addNotice(Notice notice) throws SQLException;
 
-	void increaseHit(int num);
+	void increaseHit(int num) throws SQLException;
+
+	void updateNotice(Map<Object, Object> map) throws SQLException;
 
 }
