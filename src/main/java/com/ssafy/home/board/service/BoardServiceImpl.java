@@ -51,4 +51,10 @@ public class BoardServiceImpl implements BoardService {
 		map.put("content", notice.getContent());
 		boardMapper.updateNotice(map);
 	}
+
+	@Override
+	public void deleteNotice(String number) throws Exception {
+		int num = Integer.parseInt(number);
+		boardMapper.deleteNotice(num);
+	}
 }

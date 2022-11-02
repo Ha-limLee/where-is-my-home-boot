@@ -16,32 +16,44 @@
 		<result column="content" property="content" />
 		<result column="register_time" property="registerTime" />
 	</resultMap>
-	
+
 	<select id="getBoardList" resultMap="board">
-		select article_no, user_id, subject, hit
+		select article_no, user_id,
+		subject, hit
 		from notice
 	</select>
-	
-	<select id="getNoticeDetail" parameterType="int" resultMap="boardDetail">
+
+	<select id="getNoticeDetail" parameterType="int"
+		resultMap="boardDetail">
 		select *
 		from notice
 		where article_no = #{num}
 	</select>
-	
+
 	<update id="increaseHit" parameterType="int">
 		update notice
-		set hit = hit+1
+		set hit =
+		hit+1
 		where artile_No = #{num}
 	</update>
-	
+
 	<insert id="addNotice" parameterType="notice">
-		insert into notice(user_id, subject, content, hit, register_time)
-		values (#{userId}, #{subject}, #{content}, 0, now())
+		insert into notice(user_id,
+		subject, content, hit, register_time)
+		values (#{userId}, #{subject},
+		#{content}, 0, now())
 	</insert>
-	
+
 	<update id="updateNotice" parameterType="map">
 		update notice
-		set subject = #{subject}, content = #{content}
+		set subject
+		= #{subject}, content = #{content}
 		where article_no = #{num}
 	</update>
+
+	<delete id="deleteNotice" parameterType="int">
+		delete
+		from notice
+		where article_no = #{num}
+	</delete>
 </mapper>
