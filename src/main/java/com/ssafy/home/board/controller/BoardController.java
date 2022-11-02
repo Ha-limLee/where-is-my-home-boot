@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +60,18 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("addNotice Faile", HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
+	
+	@PutMapping("/{noticeNum}")
+	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Notice notice) {
+		
+		try {
+			boardService.updateNotice(number, notice);
+			return new ResponseEntity<String>("updateNotice OK", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("updateNotice Fail", HttpStatus.OK);
 		}
 	}
 }
