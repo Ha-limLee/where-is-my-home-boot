@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.home.estate.mapper.EstateMapper">
+
+	<resultMap type="aptTradeInfoDto" id="aptInfo">
+		<result column="aptCode" property="aptCode" />
+		<result column="apartmentName" property="aptName" />
+		<result column="dealAmount" property="price" />
+	</resultMap>
+	
+	<select id="getAptListByOption" parameterType="map" resultMap="aptInfo">
+		select *
+		from (
+		select *	
+		from houseinfo
+		where dongCode in
+		(
+		select dongCode
+		from dongCode
+		<where>
+			sidoName = #{si} and gugunName = #{gugun}
+			<if test="dong != null">
+				and dongName = #{dong}
+			</if>
+			<if test="keyword != null">
+				and apartmentName like concat('%', #{keyword}, '%')
+			</if>
+		</where>
+		))
+		hi join
+		(
+		select *
+		from housedeal
+		<where>
+			<if test="dealYear != null">
+				and dealYear=#{dealYear}
+			</if>
+			<if test="dealMonth != null">
+				and dealMonth=#{dealMonth}
+			</if>
+		</where>
+		) hd on (hi.aptCode = hd.aptCode)
+	</select>
+
+	<select id="getSiList" resultType="string">
+		select distinct sidoName
+		from
+		dongCode;
+	</select>
+
+	<select id="getGuGunList" resultType="string">
+		select distinct gugunName
+		from dongCode
+		where gugunName is not null and sidoName like concat('%',
+		#{si}, '%')
+	</select>
+
+	<select id="getDongList" parameterType="map" resultType="string">
+		select dongName
+		from dongCode
+		where dongName is not null and gugunName =
+		#{gugun} and sidoName = #{si}
+		<!-- <include refid="search"></include> -->
+	</select>
+
+	<!-- <sql id="search"> <if test="dong != null"> and gugunName like concat('%', 
+		#{gugun}, '%') and gugunName = #{gugun} </if> <if test="si != null"> and 
+		sidoName like concat('%', #{si}, '%') and sidoName = #{si} </if> </sql> -->
+</mapper>
