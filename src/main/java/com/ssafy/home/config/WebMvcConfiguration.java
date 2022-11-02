@@ -23,8 +23,8 @@ import com.ssafy.home.interceptor.ConfirmInterceptor;
 @MapperScan(basePackages = { "com.ssafy.**.mapper" })
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-	private final List<String> patterns = Arrays.asList("/board/*", "/admin", "/user/list");
-
+//	private final List<String> patterns = Arrays.asList("/board/*", "/admin", "/user/list");
+	private final List<String> patterns = Arrays.asList("/admin", "/user/list");
 	@Autowired
 	private ConfirmInterceptor confirmInterceptor;
 
