@@ -63,7 +63,7 @@ public class UserController {
 				 * 필요시 쿠키 추가
 				 */
 				System.out.println(user.toString());
-				return new ResponseEntity<String>("login Ok", HttpStatus.OK);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
 			}
 
 			System.out.println("null");
