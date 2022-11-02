@@ -1,4 +1,4 @@
-package com.ssafy.home.estate.entity;
+package com.ssafy.home.estate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,16 +7,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HouseInfo {
+public class AptTradeInfoDto {
 
-	private long no;
-	private String dealAmount;
+	private long aptCode;
+	private String aptName;
+	private String price;
 	private int dealYear;
 	private int dealMonth;
 	private int dealDay;
-	private String area;
-	private String floor;
-	private String cancelDealType;
-	private long aptCode;
 	
 }
