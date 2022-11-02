@@ -18,7 +18,7 @@
 
 	<select id="loginUser" parameterType="map" resultMap="user1">
 		select
-		user_id, user_name
+		user_id, user_name, authority
 		from member
 		where user_id = #{userid} and
 		user_password = #{userpwd}
