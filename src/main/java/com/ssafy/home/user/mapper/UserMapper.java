@@ -1,10 +1,10 @@
 package com.ssafy.home.user.mapper;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import com.ssafy.home.user.entity.User;
 
@@ -19,4 +19,6 @@ public interface UserMapper {
 	void deleteUser(String userId) throws SQLException;
 
 	User getUserInfo(String userId) throws SQLException;
+
+	List<User> getUsers() throws SQLException;
 }

@@ -1,5 +1,6 @@
 package com.ssafy.home.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.user.entity.User;
@@ -15,4 +16,5 @@ public interface UserService {
 
 	void deleteUser(String userId) throws Exception;
 
+	List<User> getUsers() throws Exception;
 }
