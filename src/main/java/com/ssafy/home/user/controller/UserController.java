@@ -3,12 +3,14 @@ package com.ssafy.home.user.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.home.user.entity.User;
+import com.ssafy.home.user.service.JwtService;
 import com.ssafy.home.user.service.UserService;
 
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,15 +33,17 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin("*")
 @Api("유저 컨트롤러 API")
 public class UserController {
 
 	private final UserService userService;
 
+	private final JwtService jwtService;
+	
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, JwtService jwtService) {
 		this.userService = userService;
+		this.jwtService = jwtService;
 	}
 
 	@ApiOperation(value = "로그인", notes = "로그인에 대한  API.")
@@ -54,11 +60,15 @@ public class UserController {
 			User user = userService.loginMember(map);
 
 			if (user != null) {
-				session.setAttribute("userinfo", user);
+				String id = user.getUserId();
+				String token = jwtService.getToken("id", id);
 
-				/*
-				 * 필요시 쿠키 추가
-				 */
+				Cookie cookie = new Cookie("token", token);
+				cookie.setHttpOnly(true);
+				cookie.setPath("/");
+				
+				response.addCookie(cookie);
+				
 				System.out.println(user.toString());
 				return new ResponseEntity<User>(user, HttpStatus.OK);
 			}
@@ -72,6 +82,18 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/check-token")
+	public ResponseEntity<?> checkToken(@CookieValue(value = "token", required = false) String token) {
+		Claims claims = jwtService.getClaims(token);
+		
+		if (claims != null) {
+			String id = claims.get("id").toString();
+			return new ResponseEntity<>(id, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "로그아웃", notes = "로그아웃에 대한 정보.")
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
