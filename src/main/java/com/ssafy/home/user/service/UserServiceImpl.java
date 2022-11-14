@@ -54,4 +54,19 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getUsers();
 	}
 
+	@Override
+	public void saveRefreshToken(String userId, String refreshToken) {
+		userMapper.saveRefreshToken(userId, refreshToken);
+	}
+
+	@Override
+	public String getRefreshToken(String userId) {
+		return userMapper.getRefreshToken(userId);
+	}
+
+	@Override
+	public void deleteRefreshToken(String userId) {
+		userMapper.deleteRefreshToken(userId);
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.home.user.entity.User;
 
@@ -21,4 +22,10 @@ public interface UserMapper {
 	User getUserInfo(String userId) throws SQLException;
 
 	List<User> getUsers() throws SQLException;
+
+	void saveRefreshToken(@Param("userId") String userId, @Param("refreshToken") String refreshToken);
+
+	String getRefreshToken(String userId);
+
+	void deleteRefreshToken(String userId);
 }

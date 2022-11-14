@@ -19,13 +19,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService{
-	
 	private String secretKey = "asdfa1!r1rf#6zcwmo&1072%4r624rfja;awef24rq][.vrkafr!*ja$2j#via;erfmcqjedzdfq$";
+	private final long ACCESS_EXP_TIME = 1000 * 60 * 60 * 2; // 2시간
+	private final long REFRESH_EXP_TIME = 1000 * 60 * 60 * 24 * 7; // 1주일
 	
 	@Override
-	public String getToken(String key, Object value) {
-		Date expTime = new Date();
-		expTime.setTime(expTime.getTime() + 1000 * 60 * 5);
+	public String createToken(String key, Object value, String subject, long expTime) {
+		Date expDate = new Date();
+		expDate.setTime(expDate.getTime() + expTime);
+		
 		byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
 		Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
 		
@@ -38,14 +40,14 @@ public class JwtServiceImpl implements JwtService{
 		
 		JwtBuilder builder = Jwts.builder().setHeader(headerMap)
 								.setClaims(map)
-								.setExpiration(expTime)
+								.setExpiration(expDate)
 								.signWith(signKey, SignatureAlgorithm.HS256);
 		
 		return builder.compact();
 	}
 
 	@Override
-	public Claims getClaims(String token) {
+	public Claims checkToken(String token) {
 		if (token != null && !"".equals(token)) {
 			try {
 				byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
@@ -59,5 +61,16 @@ public class JwtServiceImpl implements JwtService{
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public String createRefreshToken(String key, Object data) {
+		// TODO Auto-generated method stub
+		return createToken(key, data, "refresh-token", REFRESH_EXP_TIME);
+	}
+
+	@Override
+	public String createAccessToken(String key, Object data) {
+		return createToken(key, data, "access-token", ACCESS_EXP_TIME);
 	}
 }

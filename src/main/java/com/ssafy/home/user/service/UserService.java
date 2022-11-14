@@ -17,4 +17,10 @@ public interface UserService {
 	void deleteUser(String userId) throws Exception;
 
 	List<User> getUsers() throws Exception;
+
+	void saveRefreshToken(String userId, String refreshToken);
+
+	String getRefreshToken(String userId);
+
+	void deleteRefreshToken(String userId);
 }
