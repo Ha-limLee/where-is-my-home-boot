@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.home.board.entity.Notice;
+import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
 import com.ssafy.home.estate.service.EstateService;

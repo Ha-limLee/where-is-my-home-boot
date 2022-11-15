@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class Article {
 
 	private int articleNo;
 	private String userId;
@@ -18,4 +18,6 @@ public class Notice {
 	private String content;
 	private int hit;
 	private Timestamp registerTime;
+	private int articleTypeId;
+	private String articleTypeName;
 }

@@ -5,47 +5,55 @@
 <mapper namespace="com.ssafy.home.board.mapper.BoardMapper">
 
 
-	<resultMap type="notice" id="board">
+	<resultMap type="article" id="board">
 		<result column="article_no" property="articleNo" />
 		<result column="user_id" property="userId" />
 		<result column="subject" property="subject" />
 		<result column="hit" property="hit" />
+		<result column="id" property="articleTypeId" />
+		<result column="prop_name" property="articleTypeName" />
 	</resultMap>
 
-	<resultMap type="notice" id="boardDetail" extends="board">
+	<resultMap type="article" id="boardDetail" extends="board">
 		<result column="content" property="content" />
 		<result column="register_time" property="registerTime" />
 	</resultMap>
 
-	<select id="getBoardList" resultMap="board">
-		select article_no, user_id,
-		subject, hit
-		from notice
+	<resultMap type="articleProp" id="property">
+		<result column="id" property="id"/>
+		<result column="prop_name" property="propName"/>
+	</resultMap>
+	
+	<select id="getBoardList" parameterType="string" resultMap="board">
+		select b.article_no, b.user_id,
+		b.subject, b.hit, ap.id, ap.prop_name
+		from article_props ap join board b on (b.article_prop = ap.id)
+		where ap.prop_name like concat('%', #{articleType}, '%')
 	</select>
 
 	<select id="getNoticeDetail" parameterType="int"
 		resultMap="boardDetail">
 		select *
-		from notice
+		from board
 		where article_no = #{num}
 	</select>
 
 	<update id="increaseHit" parameterType="int">
-		update notice
+		update board
 		set hit =
 		hit+1
 		where article_no = #{num}
 	</update>
 
-	<insert id="addNotice" parameterType="notice">
-		insert into notice(user_id,
+	<insert id="addNotice" parameterType="article">
+		insert into board(user_id,
 		subject, content, hit, register_time)
 		values (#{userId}, #{subject},
 		#{content}, 0, now())
 	</insert>
 
 	<update id="updateNotice" parameterType="map">
-		update notice
+		update board
 		set subject
 		= #{subject}, content = #{content}
 		where article_no = #{num}
@@ -53,7 +61,12 @@
 
 	<delete id="deleteNotice" parameterType="int">
 		delete
-		from notice
+		from board
 		where article_no = #{num}
 	</delete>
+	
+	<select id="getArticleType" resultMap="property">
+		select *
+		from article_props
+	</select>
 </mapper>
