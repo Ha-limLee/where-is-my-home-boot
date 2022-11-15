@@ -22,7 +22,7 @@
 		where dongCode in
 		(
 		select dongCode
-		from dongCode
+		from dongcode
 		<where>
 			sidoName = #{si} and gugunName = #{gugun}
 			<if test="dong != null">
@@ -51,19 +51,19 @@
 	<select id="getSiList" resultType="string">
 		select distinct sidoName
 		from
-		dongCode;
+		dongcode;
 	</select>
 
 	<select id="getGuGunList" resultType="string">
 		select distinct gugunName
-		from dongCode
+		from dongcode
 		where gugunName is not null and sidoName like concat('%',
 		#{si}, '%')
 	</select>
 
 	<select id="getDongList" parameterType="map" resultType="string">
 		select dongName
-		from dongCode
+		from dongcode
 		where dongName is not null and gugunName =
 		#{gugun} and sidoName = #{si}
 		<!-- <include refid="search"></include> -->
