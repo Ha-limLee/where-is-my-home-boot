@@ -1,26 +1,22 @@
 package com.ssafy.home.user.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.home.user.entity.User;
@@ -64,7 +60,7 @@ public class UserController {
 				 * 필요시 쿠키 추가
 				 */
 				System.out.println(user.toString());
-				return new ResponseEntity<String>("login Ok", HttpStatus.OK);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
 			}
 
 			System.out.println("null");
@@ -98,6 +94,18 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("getUserDetail Fail", HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
+	
+	@ApiOperation(value = "회원리스트", notes = "민감한 정보(비밀번호 등)를 제외한 회원들 가져오기")
+	@GetMapping("/user-public")
+	public ResponseEntity<?> getUsers() {
+		try {
+			List<User> users = userService.getUsers();
+			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("getUsers Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 	

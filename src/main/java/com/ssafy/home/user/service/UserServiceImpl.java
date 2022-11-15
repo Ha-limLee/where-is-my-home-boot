@@ -1,5 +1,6 @@
 package com.ssafy.home.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(String userId) throws Exception {
 		userMapper.deleteUser(userId);
+	}
+
+	@Override
+	public List<User> getUsers() throws Exception {
+		return userMapper.getUsers();
 	}
 
 }
