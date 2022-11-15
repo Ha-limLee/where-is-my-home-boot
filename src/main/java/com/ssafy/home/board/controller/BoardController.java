@@ -1,6 +1,7 @@
 package com.ssafy.home.board.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.home.board.entity.Notice;
+import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.board.service.BoardService;
 import com.ssafy.home.board.service.BoardServiceImpl;
 
@@ -36,10 +38,12 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 전체 조회", notes = "공지사항 글 전체 조회 API.")
 	@GetMapping
-	public ResponseEntity<?> getNoticeList() {
+	public ResponseEntity<?> getNoticeList(@RequestParam Map<String, String> options) {
 		try {
-			List<Notice> boardList = boardService.getBoardList();
-			return new ResponseEntity<List<Notice>>(boardList, HttpStatus.OK);
+			String articleType = options.getOrDefault("type", "");
+			
+			List<Article> boardList = boardService.getBoardList(articleType);
+			return new ResponseEntity<List<Article>>(boardList, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
@@ -50,8 +54,8 @@ public class BoardController {
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
-			Notice notice = boardService.getNoticeDetail(number);
-			return new ResponseEntity<Notice>(notice, HttpStatus.OK);
+			Article notice = boardService.getNoticeDetail(number);
+			return new ResponseEntity<Article>(notice, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +65,7 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 추가", notes = "공지사항 글 추가 API.")
 	@PostMapping
-	public ResponseEntity<?> addNotice(@RequestBody Notice notice) {
+	public ResponseEntity<?> addNotice(@RequestBody Article notice) {
 		try {
 			boardService.addNotice(notice);
 			return new ResponseEntity<String>("addNotice OK", HttpStatus.OK);
@@ -73,7 +77,7 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 수정", notes = "공지사항 글 수정 API.")
 	@PutMapping("/{noticeNum}")
-	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Notice notice) {
+	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Article notice) {
 
 		try {
 			boardService.updateNotice(number, notice);
@@ -95,6 +99,18 @@ public class BoardController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("deleteNotice Fail", HttpStatus.OK);
 		}
-
 	}
+	
+	@GetMapping("/article/type")
+	public ResponseEntity<?> getArticleType() {
+		
+		try {
+			List<String> typeList = boardService.getArticleType();
+			return new ResponseEntity<List<String>>(typeList, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("article Type Fail", HttpStatus.OK);
+		}
+	}
+	
 }

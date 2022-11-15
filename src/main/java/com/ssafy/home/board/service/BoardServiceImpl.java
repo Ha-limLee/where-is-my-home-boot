@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.home.board.entity.Notice;
+import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.board.mapper.BoardMapper;
 
 @Service
@@ -24,26 +24,26 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<Notice> getBoardList() throws Exception {
-		return boardMapper.getBoardList();
+	public List<Article> getBoardList(String articleType) throws Exception {
+		return boardMapper.getBoardList(articleType);
 	}
 
 	@Override
 	@Transactional
-	public Notice getNoticeDetail(String number) throws Exception {
+	public Article getNoticeDetail(String number) throws Exception {
 		int num = Integer.parseInt(number);
-		Notice notice = boardMapper.getNoticeDetail(num);
+		Article notice = boardMapper.getNoticeDetail(num);
 		boardMapper.increaseHit(num);
 		return notice;
 	}
 
 	@Override
-	public void addNotice(Notice notice) throws Exception {
+	public void addNotice(Article notice) throws Exception {
 		boardMapper.addNotice(notice);
 	}
 
 	@Override
-	public void updateNotice(String number, Notice notice) throws Exception {
+	public void updateNotice(String number, Article notice) throws Exception {
 		int num = Integer.parseInt(number);
 		Map<Object, Object> map = new HashMap<>();
 		map.put("num", num);
@@ -56,5 +56,10 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteNotice(String number) throws Exception {
 		int num = Integer.parseInt(number);
 		boardMapper.deleteNotice(num);
+	}
+
+	@Override
+	public List<String> getArticleType() throws Exception {
+		return boardMapper.getArticleType();
 	}
 }
