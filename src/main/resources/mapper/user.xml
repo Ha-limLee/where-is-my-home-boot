@@ -61,4 +61,22 @@
 		from member
 		where user_id = #{userId}
 	</delete>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update member
+		set token = #{refreshToken}
+		where user_id = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string">
+		select token
+		from member
+		where user_id = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="string">
+		update member
+		set token = null
+		where user_id = #{userId} 
+	</update>
 </mapper>
