@@ -9,7 +9,7 @@ public interface BoardService {
 
 	public List<BoardArticleDto> getBoardList(String articleType) throws Exception;
 
-	public Article getNoticeDetail(String number) throws Exception;
+	public BoardArticleDto getNoticeDetail(String number) throws Exception;
 
 	public void addNotice(Article notice) throws Exception;
 

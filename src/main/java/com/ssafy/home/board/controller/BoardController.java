@@ -55,8 +55,8 @@ public class BoardController {
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
-			Article notice = boardService.getNoticeDetail(number);
-			return new ResponseEntity<Article>(notice, HttpStatus.OK);
+			BoardArticleDto notice = boardService.getNoticeDetail(number);
+			return new ResponseEntity<BoardArticleDto>(notice, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

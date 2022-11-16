@@ -15,9 +15,8 @@
 		<result column="register_time" property="registerTime"/>
 	</resultMap>
 
-	<resultMap type="article" id="boardDetail" extends="board">
+	<resultMap type="boardArticleDto" id="boardDetail" extends="board">
 		<result column="content" property="content" />
-		<result column="register_time" property="registerTime" />
 	</resultMap>
 
 	<resultMap type="articleProp" id="property">
@@ -33,9 +32,9 @@
 
 	<select id="getNoticeDetail" parameterType="int"
 		resultMap="boardDetail">
-		select *
-		from board
-		where article_no = #{num}
+		select b.article_no, b.content, b.user_id, b.subject, b.hit, ap.id as article_prop_id, ap.prop_name, DATE_FORMAT(b.register_time, '%y-%m-%d') AS register_time
+		from article_props ap join board b on (b.article_prop = ap.id)
+		where b.article_no = #{num}
 	</select>
 
 	<update id="increaseHit" parameterType="int">

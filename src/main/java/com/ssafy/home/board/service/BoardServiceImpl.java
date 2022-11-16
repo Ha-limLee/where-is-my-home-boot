@@ -31,9 +31,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public Article getNoticeDetail(String number) throws Exception {
+	public BoardArticleDto getNoticeDetail(String number) throws Exception {
 		int num = Integer.parseInt(number);
-		Article notice = boardMapper.getNoticeDetail(num);
+		BoardArticleDto notice = boardMapper.getNoticeDetail(num);
 		boardMapper.increaseHit(num);
 		return notice;
 	}

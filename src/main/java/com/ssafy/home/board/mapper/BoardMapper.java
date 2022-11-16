@@ -14,7 +14,7 @@ public interface BoardMapper {
 
 	List<BoardArticleDto> getBoardList(String articleType) throws SQLException;
 
-	Article getNoticeDetail(int num) throws SQLException;
+	BoardArticleDto getNoticeDetail(int num) throws SQLException;
 
 	void addNotice(Article notice) throws SQLException;
 
