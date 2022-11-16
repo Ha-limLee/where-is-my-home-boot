@@ -50,6 +50,7 @@ public class BoardServiceImpl implements BoardService {
 		map.put("num", num);
 		map.put("subject", notice.getSubject());
 		map.put("content", notice.getContent());
+		map.put("articleProp", notice.getArticleProp());
 		boardMapper.updateNotice(map);
 	}
 
