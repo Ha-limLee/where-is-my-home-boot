@@ -1,10 +1,13 @@
 package com.ssafy.home.board.service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.home.board.dto.CommentDto;
 import com.ssafy.home.board.entity.Comment;
 import com.ssafy.home.board.mapper.CommentMapper;
 
@@ -19,10 +22,18 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<Comment> getCommentList(String articleNo) throws Exception {
+	public List<CommentDto> getCommentList(String articleNo) throws Exception {
 		int number = Integer.parseInt(articleNo);
 		List<Comment> comment = commentMapper.getCommentList(number);
-		return comment;
+		List<CommentDto> commentDtos = new ArrayList<>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		for(Comment c : comment) {
+			String date = sdf.format(c.getRegisterDate());
+			CommentDto cd = new CommentDto(c.getId(), date, c.getContent(), c.getUserId(), number);
+			commentDtos.add(cd);
+		}
+		return commentDtos;
 	}
 
 	@Override

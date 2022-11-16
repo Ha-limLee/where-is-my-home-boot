@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.home.board.dto.CommentDto;
 import com.ssafy.home.board.entity.Comment;
 import com.ssafy.home.board.service.CommentService;
 
@@ -35,8 +36,8 @@ public class CommentController {
 	@GetMapping("/article/{no}")
 	public ResponseEntity<?> getCommentList(@PathVariable("no") String articleNo) {
 		try {
-			List<Comment> comments = commentService.getCommentList(articleNo);
-			return new ResponseEntity<List<Comment>>(comments, HttpStatus.OK);
+			List<CommentDto> comments = commentService.getCommentList(articleNo);
+			return new ResponseEntity<List<CommentDto>>(comments, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("comment List Fail", HttpStatus.OK);
