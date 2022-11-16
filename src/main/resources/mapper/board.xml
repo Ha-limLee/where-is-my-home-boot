@@ -53,8 +53,7 @@
 
 	<update id="updateNotice" parameterType="map">
 		update board
-		set subject
-		= #{subject}, content = #{content}
+		set subject = #{subject}, content = #{content}, article_prop = #{articleProp}
 		where article_no = #{num}
 	</update>
 
