@@ -8,6 +8,8 @@
 		<result column="aptCode" property="aptCode" />
 		<result column="apartmentName" property="aptName" />
 		<result column="dealAmount" property="price" />
+		<result column="lng" property="lng" />
+		<result column="lat" property="lat" />
 	</resultMap>
 
 	<resultMap type="dongCode" id="dongCodeInfo">

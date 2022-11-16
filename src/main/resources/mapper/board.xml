@@ -10,8 +10,7 @@
 		<result column="user_id" property="userId" />
 		<result column="subject" property="subject" />
 		<result column="hit" property="hit" />
-		<result column="id" property="articleTypeId" />
-		<result column="prop_name" property="articleTypeName" />
+		<result column="article_prop" property="articleProp" />
 	</resultMap>
 
 	<resultMap type="article" id="boardDetail" extends="board">

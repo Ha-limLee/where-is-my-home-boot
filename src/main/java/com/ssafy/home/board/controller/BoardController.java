@@ -41,7 +41,7 @@ public class BoardController {
 	public ResponseEntity<?> getNoticeList(@RequestParam Map<String, String> options) {
 		try {
 			String articleType = options.getOrDefault("type", "");
-			
+			System.out.println(articleType);
 			List<Article> boardList = boardService.getBoardList(articleType);
 			return new ResponseEntity<List<Article>>(boardList, HttpStatus.OK);
 		} catch (Exception e) {

@@ -15,5 +15,7 @@ public class AptTradeInfoDto {
 	private int dealYear;
 	private int dealMonth;
 	private int dealDay;
+	private String lng;
+	private String lat;
 	
 }
