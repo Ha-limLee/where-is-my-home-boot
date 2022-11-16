@@ -5,18 +5,18 @@
 <mapper namespace="com.ssafy.home.board.mapper.BoardMapper">
 
 
-	<resultMap type="article" id="board">
+	<resultMap type="boardArticleDto" id="board">
 		<result column="article_no" property="articleNo" />
 		<result column="user_id" property="userId" />
 		<result column="subject" property="subject" />
 		<result column="hit" property="hit" />
-		<result column="id" property="articleTypeId" />
-		<result column="prop_name" property="articleTypeName" />
+		<result column="article_prop_id" property="articlePropId" />
+		<result column="prop_name" property="articlePropName" />
+		<result column="register_time" property="registerTime"/>
 	</resultMap>
 
-	<resultMap type="article" id="boardDetail" extends="board">
+	<resultMap type="boardArticleDto" id="boardDetail" extends="board">
 		<result column="content" property="content" />
-		<result column="register_time" property="registerTime" />
 	</resultMap>
 
 	<resultMap type="articleProp" id="property">
@@ -25,17 +25,16 @@
 	</resultMap>
 	
 	<select id="getBoardList" parameterType="string" resultMap="board">
-		select b.article_no, b.user_id,
-		b.subject, b.hit, ap.id, ap.prop_name
+		select b.article_no, b.user_id, b.subject, b.hit, ap.id as article_prop_id, ap.prop_name, DATE_FORMAT(b.register_time, '%y-%m-%d') AS register_time
 		from article_props ap join board b on (b.article_prop = ap.id)
 		where ap.prop_name like concat('%', #{articleType}, '%')
 	</select>
 
 	<select id="getNoticeDetail" parameterType="int"
 		resultMap="boardDetail">
-		select *
-		from board
-		where article_no = #{num}
+		select b.article_no, b.content, b.user_id, b.subject, b.hit, ap.id as article_prop_id, ap.prop_name, DATE_FORMAT(b.register_time, '%y-%m-%d') AS register_time
+		from article_props ap join board b on (b.article_prop = ap.id)
+		where b.article_no = #{num}
 	</select>
 
 	<update id="increaseHit" parameterType="int">

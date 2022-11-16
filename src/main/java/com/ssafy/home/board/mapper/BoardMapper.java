@@ -6,14 +6,15 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.home.board.dto.BoardArticleDto;
 import com.ssafy.home.board.entity.Article;
 
 @Mapper
 public interface BoardMapper {
 
-	List<Article> getBoardList(String articleType) throws SQLException;
+	List<BoardArticleDto> getBoardList(String articleType) throws SQLException;
 
-	Article getNoticeDetail(int num) throws SQLException;
+	BoardArticleDto getNoticeDetail(int num) throws SQLException;
 
 	void addNotice(Article notice) throws SQLException;
 

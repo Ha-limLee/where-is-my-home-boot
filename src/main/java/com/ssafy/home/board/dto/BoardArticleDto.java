@@ -1,7 +1,7 @@
-package com.ssafy.home.board.entity;
+package com.ssafy.home.board.dto;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,14 +12,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Article {
+public class BoardArticleDto {
 
 	private int articleNo;
 	private String userId;
 	private String subject;
 	private String content;
 	private int hit;
-	private Timestamp registerTime;
-	private int articleProp;
+	private String registerTime;
+	private int articlePropId;
+	private String articlePropName;
 	
 }

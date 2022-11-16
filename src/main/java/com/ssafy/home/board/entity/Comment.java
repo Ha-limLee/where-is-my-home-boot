@@ -1,6 +1,5 @@
 package com.ssafy.home.board.entity;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +11,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Article {
+public class Comment {
 
-	private int articleNo;
-	private String userId;
-	private String subject;
+	private int id;
+	private Timestamp registerDate;
+	private Timestamp modifyDate;
 	private String content;
-	private int hit;
-	private Timestamp registerTime;
-	private int articleProp;
-	
+	private String userId;
+	private int articleId;
 }

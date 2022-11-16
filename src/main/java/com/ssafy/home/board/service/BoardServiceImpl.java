@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.home.board.dto.BoardArticleDto;
 import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.board.mapper.BoardMapper;
 
@@ -24,15 +25,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<Article> getBoardList(String articleType) throws Exception {
+	public List<BoardArticleDto> getBoardList(String articleType) throws Exception {
 		return boardMapper.getBoardList(articleType);
 	}
 
 	@Override
 	@Transactional
-	public Article getNoticeDetail(String number) throws Exception {
+	public BoardArticleDto getNoticeDetail(String number) throws Exception {
 		int num = Integer.parseInt(number);
-		Article notice = boardMapper.getNoticeDetail(num);
+		BoardArticleDto notice = boardMapper.getNoticeDetail(num);
 		boardMapper.increaseHit(num);
 		return notice;
 	}

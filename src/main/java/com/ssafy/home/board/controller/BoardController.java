@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.home.board.dto.BoardArticleDto;
 import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.board.service.BoardService;
 import com.ssafy.home.board.service.BoardServiceImpl;
@@ -26,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/board")
-@Api("공지사항 게시판 컨트롤러 API")
+@Api("게시판 컨트롤러 API")
 public class BoardController {
 
 	private final BoardService boardService;
@@ -41,9 +42,9 @@ public class BoardController {
 	public ResponseEntity<?> getNoticeList(@RequestParam Map<String, String> options) {
 		try {
 			String articleType = options.getOrDefault("type", "");
-			
-			List<Article> boardList = boardService.getBoardList(articleType);
-			return new ResponseEntity<List<Article>>(boardList, HttpStatus.OK);
+			System.out.println(articleType);
+			List<BoardArticleDto> boardList = boardService.getBoardList(articleType);
+			return new ResponseEntity<List<BoardArticleDto>>(boardList, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
@@ -54,8 +55,8 @@ public class BoardController {
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
-			Article notice = boardService.getNoticeDetail(number);
-			return new ResponseEntity<Article>(notice, HttpStatus.OK);
+			BoardArticleDto notice = boardService.getNoticeDetail(number);
+			return new ResponseEntity<BoardArticleDto>(notice, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
