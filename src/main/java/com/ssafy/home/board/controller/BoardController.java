@@ -67,6 +67,7 @@ public class BoardController {
 	@PostMapping
 	public ResponseEntity<?> addNotice(@RequestBody Article notice) {
 		try {
+			System.out.println(notice);
 			boardService.addNotice(notice);
 			return new ResponseEntity<String>("addNotice OK", HttpStatus.OK);
 		} catch (Exception e) {

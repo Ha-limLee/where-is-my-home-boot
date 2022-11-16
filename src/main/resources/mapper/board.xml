@@ -47,9 +47,9 @@
 
 	<insert id="addNotice" parameterType="article">
 		insert into board(user_id,
-		subject, content, hit, register_time)
+		subject, content, hit, register_time, article_prop)
 		values (#{userId}, #{subject},
-		#{content}, 0, now())
+		#{content}, 0, now(), #{articleProp})
 	</insert>
 
 	<update id="updateNotice" parameterType="map">
