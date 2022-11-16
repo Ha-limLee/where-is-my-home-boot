@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.home.board.dto.BoardArticleDto;
 import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.board.service.BoardService;
 import com.ssafy.home.board.service.BoardServiceImpl;
@@ -42,8 +43,8 @@ public class BoardController {
 		try {
 			String articleType = options.getOrDefault("type", "");
 			System.out.println(articleType);
-			List<Article> boardList = boardService.getBoardList(articleType);
-			return new ResponseEntity<List<Article>>(boardList, HttpStatus.OK);
+			List<BoardArticleDto> boardList = boardService.getBoardList(articleType);
+			return new ResponseEntity<List<BoardArticleDto>>(boardList, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
