@@ -15,7 +15,24 @@
 		resultMap="commentInfo">
 		select id, register_date, content, user_id
 		from comment
-		where article_id = #{number}
+		where
+		article_id = #{number}
 	</select>
+
+	<insert id="createComment" parameterType="comment">
+		INSERT INTO comment(register_date,modify_date,content,user_id,article_id)
+		VALUES (now(), now(), #{content}, #{userId}, #{articleId})
+	</insert>
 	
+	<update id="updateComment" parameterType="comment">
+		UPDATE comment
+		SET modify_date = now(), content = #{content}  
+		WHERE id= #{id};
+	</update>
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE
+		FROM comment
+		WHERE id = #{number}
+	</delete>
 </mapper>

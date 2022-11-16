@@ -24,5 +24,21 @@ public class CommentServiceImpl implements CommentService {
 		List<Comment> comment = commentMapper.getCommentList(number);
 		return comment;
 	}
+
+	@Override
+	public void createComment(Comment comment) throws Exception {
+		commentMapper.createComment(comment);
+	}
+
+	@Override
+	public void deleteComment(String commentNo) throws Exception {
+		int number = Integer.parseInt(commentNo);
+		commentMapper.deleteComment(number);
+	}
+
+	@Override
+	public void updateComment(Comment comment) throws Exception {
+		commentMapper.updateComment(comment);
+	}
 	
 }
