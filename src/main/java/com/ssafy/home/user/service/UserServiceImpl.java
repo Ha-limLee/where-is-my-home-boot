@@ -6,18 +6,21 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.home.user.dto.UserDto;
 import com.ssafy.home.user.entity.User;
 import com.ssafy.home.user.mapper.UserMapper;
+import com.ssafy.home.user.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	private final UserMapper userMapper;
-	
-	@Autowired
-	public UserServiceImpl(UserMapper userMapper) {
+	private final UserRepository userRepository;
+
+	public UserServiceImpl(UserMapper userMapper, UserRepository userRepository) {
 		super();
 		this.userMapper = userMapper;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -30,13 +33,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void joinUser(User user) throws Exception {
-		userMapper.joinUser(user);
+	public void joinUser(UserDto user) throws Exception {
+		User u = new User(user.getUserId(), user.getUserName(), user.getUserPassword(), user.getAddress(), user.getPhoneNumber(), user.getAuthority(), null);
+		userMapper.joinUser(u);
 	}
 
 	@Override
 	public User getUserInfo(String userId) throws Exception {
 		return userMapper.getUserInfo(userId);
+	}
+	
+	@Override
+	public User getUserByUserName(String userName) throws Exception {
+		return userRepository.findByUserName(userName);
 	}
 	
 	@Override
