@@ -3,7 +3,7 @@ package com.ssafy.home.user.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.home.user.dto.UserDto;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User getUserByUserName(String userName) throws Exception {
-		return userRepository.findByUserName(userName);
+		return userRepository.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 	}
 	
 	@Override

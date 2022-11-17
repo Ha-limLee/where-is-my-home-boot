@@ -2,6 +2,8 @@ package com.ssafy.home.filter;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -55,6 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			UsernamePasswordAuthenticationToken authenticationToken=
 					new UsernamePasswordAuthenticationToken(user.getUserId(), user.getUserPassword());
 			
+			// authenticationManager.authenticate()에서 로그인 체크 확정임
 			Authentication authentication = 
 					authenticationManager.authenticate(authenticationToken);
 			
@@ -92,7 +95,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 						.withClaim("username", principalDetails.getUser().getUserName())
 						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 				
-				response.addHeader(JwtProperties.ACCESS_HEADER_STRING, "Bearer "+accessToken);
+				response.addHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+accessToken);
 				
 				String refreshToken = JWT.create()
 						.withSubject(principalDetails.getUser().getUserName())
@@ -100,6 +103,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 				
 				userService.saveRefreshToken(principalDetails.getUser().getUserId(), refreshToken);
-				response.addHeader(JwtProperties.REFRESH_HEADER_STRING, "Bearer " +refreshToken);
+				response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+refreshToken);
+
+		// 응답 body에 기록
+			Map<String, String> responseMap = new HashMap<>();
+			responseMap.put(JwtProperties.ACCESS_HEADER_STRING, accessToken);
+			responseMap.put(JwtProperties.REFRESH_HEADER_STRING, refreshToken);
+			new ObjectMapper().writeValue(response.getWriter(), responseMap);
 	}
 }

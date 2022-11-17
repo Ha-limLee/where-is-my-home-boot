@@ -7,5 +7,5 @@ public interface JwtProperties {
 	long REFRESH_EXP_TIME = 1000 * 60 * 60 * 24 * 7; // 1주일
 	String ACCESS_HEADER_STRING = "access-token";
 	String REFRESH_HEADER_STRING = "refresh-token";
-	
+	String TOKEN_HEADER_PREFIX = "Bearer ";
 }

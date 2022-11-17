@@ -119,9 +119,9 @@ public class JwtController {
 	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String authorizationHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 
-		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+		if (authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_HEADER_PREFIX)) {
 			try {
-				String refreshToken = authorizationHeader.substring("Bearer ".length());
+				String refreshToken = authorizationHeader.substring(JwtProperties.TOKEN_HEADER_PREFIX.length());
 				Algorithm algorithm = Algorithm.HMAC512(JwtProperties.SECRET_KEY);
 
 				String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET_KEY)).build().verify(refreshToken)

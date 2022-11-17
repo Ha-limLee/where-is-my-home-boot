@@ -37,4 +37,8 @@ public class User {
 		}
 		return new ArrayList<>();
 	}
+
+	public void updateRefreshToken(String newRefreshToken) {
+		this.token = newRefreshToken;
+	}
 }
