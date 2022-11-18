@@ -42,6 +42,92 @@ public class UserController {
 
 	private final UserService userService;
 	private final BCryptPasswordEncoder passwordEncoder;
+
+	/*@ApiOperation(value = "로그인", notes = "로그인에 대한  API.")
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Map<String, String> map, HttpSession session,
+			HttpServletResponse response) {
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		System.out.println(".");
+		for (String s : map.keySet()) {
+			System.out.println(s + " : " + map.get(s));
+		}
+		System.out.println("/users/login");
+		try {
+			User user = userService.loginMember(map);
+
+			if (user != null) {
+				String accessToken = jwtService.createAccessToken("userid", user.getUserId());
+				String refreshToken = jwtService.createRefreshToken("userid", user.getUserId());
+
+				userService.saveRefreshToken(user.getUserId(), refreshToken);
+				
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("message", "success");
+				resultMap.put("user", user);
+				status = HttpStatus.ACCEPTED;
+
+				System.out.println(user.toString());
+			} else {
+				resultMap.put("message", "fail");
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(resultMap, status);
+	}*/
+	
+//	public ResponseEntity<?> checkToken(@CookieValue(value = "token", required = false) String token) {
+//		Claims claims = jwtService.checkToken(token);
+//
+//		if (claims != null) {
+//			String id = claims.get("id").toString();
+//			return new ResponseEntity<>(id, HttpStatus.OK);
+//		}
+//
+//		return new ResponseEntity<>(null, HttpStatus.OK);
+//	}
+//
+//	@PostMapping("/refresh")
+//	public ResponseEntity<?> refreshToken(@RequestBody User user, HttpServletRequest req) {
+//		Map<String, Object> resultMap = new HashMap<>();
+//		HttpStatus status = HttpStatus.ACCEPTED;
+//		String token = req.getHeader("refresh-token");
+//		jwtService.checkToken(token);
+//
+//		if (token.equals(userService.getRefreshToken(user.getUserId()))) {
+//			String accessToken = jwtService.createAccessToken("userid", user.getUserId());
+//			resultMap.put("access-token", accessToken);
+//			resultMap.put("message", "success");
+//			status = HttpStatus.ACCEPTED;
+//		} else {
+//			status = HttpStatus.UNAUTHORIZED;
+//		}
+//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//	}
+	
+//	@ApiOperation(value = "로그아웃", notes = "로그아웃에 대한 정보.")
+//	@PutMapping("/logout/{userId}")
+//	public ResponseEntity<?> logout(@PathVariable("userId") String userId) {
+//		Map<String, Object> resultMap = new HashMap<>();
+//		HttpStatus status = HttpStatus.ACCEPTED;
+//		try {
+//			userService.deleteRefreshToken(userId);
+//			resultMap.put("message", "success");
+//			status = HttpStatus.ACCEPTED;
+//		} catch (Exception e) {
+//			resultMap.put("message", "fail");
+//			status = HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		return new ResponseEntity<>(resultMap, status);
+//	}
 	
 	@ApiOperation(value = "회원정보", notes = "회원한명에 대한 정보.")
 	@ApiImplicitParams({
