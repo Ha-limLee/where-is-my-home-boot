@@ -1,18 +1,17 @@
 package com.ssafy.home.estate.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.auth.PrincipalDetails;
 import com.ssafy.home.estate.dto.AptSimpleInfoDto;
+import com.ssafy.home.estate.dto.SimpleBuildingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
@@ -116,6 +115,22 @@ public class EstateController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("에러 발생", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/building/keyword/{keyword}")
+	public ResponseEntity<?> getBuildingListByKeyword(@PathVariable String keyword) {
+
+		Map<String, Object> options = new HashMap<>();
+
+		options.put("keyword", keyword);
+
+		try {
+			List<SimpleBuildingDto> buildings = estateService.getBuildingListByKeyword(options);
+			return ResponseEntity.ok(buildings);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("keyword리스트 가져오던 중 에러 발생", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

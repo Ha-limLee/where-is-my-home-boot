@@ -4,9 +4,12 @@
 
 <mapper namespace="com.ssafy.home.estate.mapper.EstateMapper">
 
-	<resultMap type="aptTradeInfoDto" id="aptInfo">
-		<result column="apartmentName" property="aptName" />
+	<resultMap id="aptName" type="houseInfo">
+		<result column="apartmentName" property="apartmentName" />
 		<result column="aptCode" property="aptCode" />
+	</resultMap>
+
+	<resultMap type="aptTradeInfoDto" id="aptInfo" extends="aptName">
 		<result column="buildYear" property="buildYear" />
 		<result column="dongCode" property="dongCode" />
 		<result column="lng" property="lng" />
@@ -31,6 +34,21 @@
 		<result column="apartmentName" property="apartmentName" />
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
+	</resultMap>
+
+	<resultMap id="bStationName" type="busStation">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
+
+	<resultMap id="sStationName" type="subwayStation">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
+
+	<resultMap id="businessName" type="business">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
 	</resultMap>
 
 	<select id="getAptTradeListByOption" parameterType="map"
@@ -123,5 +141,37 @@
 		select *
 		from houseinfo
 		where dongCode = #{dongCode}
+	</select>
+
+	<select id="getBusStationByKeywordAndLimit" parameterType="map" resultMap="bStationName">
+		select id, name
+		from bus_station
+		where name like concat(#{keyword}, '%')
+		order by CHAR_LENGTH(name) ASC
+		LIMIT #{limit};
+	</select>
+
+	<select id="getSubwayStationByKeywordAndLimit" parameterType="map" resultMap="sStationName">
+		select id, name
+		from subway_station
+		where name like concat(#{keyword}, '%')
+		order by CHAR_LENGTH(name) ASC
+		LIMIT #{limit};
+	</select>
+
+	<select id="getAptByKeywordAndLimit" parameterType="map" resultMap="aptName">
+		select aptCode, apartmentName
+		from houseinfo
+		where apartmentName like concat(#{keyword}, '%')
+		order by CHAR_LENGTH(apartmentName) ASC
+		LIMIT #{limit};
+	</select>
+
+	<select id="getBusinessByKeywordAndLimit" parameterType="map" resultMap="businessName">
+		select id, name
+		from business
+		where name like concat(#{keyword}, '%')
+		order by CHAR_LENGTH(name) ASC
+		LIMIT #{limit};
 	</select>
 </mapper>
