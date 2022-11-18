@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
@@ -12,7 +13,7 @@ import com.ssafy.home.estate.dto.DongCode;
 @Mapper
 public interface EstateMapper {
 
-	List<AptTradeInfoDto> getAptListByOption(Map<Object, Object> option) throws SQLException;
+	List<AptTradeInfoDto> getAptTradeListByOption(Map<Object, Object> option) throws SQLException;
 
 	List<String> getSiList() throws SQLException;
 
@@ -22,4 +23,5 @@ public interface EstateMapper {
 
 	List<DongCode> getInterestLocation(String userId) throws SQLException;
 
+	List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws SQLException;
 }
