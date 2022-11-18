@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		String header = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 		
 		// header가 있는지 확인
-		if (servletPath.equals("/users/login") || servletPath.equals("/users/refresh")) {
+		if (servletPath.equals("/users/login") || servletPath.equals("/users/token/refresh")) {
 			chain.doFilter(request, response);
 		} else if(header == null || !header.startsWith(JwtProperties.TOKEN_HEADER_PREFIX)) {
 			// 토큰값이 없거나 정상적이지 않다면 400 오류

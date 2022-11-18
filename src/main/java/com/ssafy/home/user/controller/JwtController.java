@@ -121,7 +121,7 @@ public class JwtController {
 
 	@GetMapping("/token/refresh")
 	public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String authorizationHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+		String authorizationHeader = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
 		if (authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_HEADER_PREFIX)) {
 			try {
