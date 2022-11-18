@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ssafy.home.auth.PrincipalDetails;
+import com.ssafy.home.auth.PrincipalDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +46,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtController {
 
 	private final UserService userService;
+	private final PrincipalDetailsService principalDetailsService;
 //	private final JwtService jwtService;
 
 //	@ApiOperation(value = "로그인", notes = "로그인에 대한  API.")
@@ -116,32 +120,37 @@ public class JwtController {
 //	}
 
 	@GetMapping("/token/refresh")
-	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String authorizationHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 
 		if (authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_HEADER_PREFIX)) {
 			try {
 				String refreshToken = authorizationHeader.substring(JwtProperties.TOKEN_HEADER_PREFIX.length());
-				Algorithm algorithm = Algorithm.HMAC512(JwtProperties.SECRET_KEY);
+//				Algorithm algorithm = Algorithm.HMAC512(JwtProperties.SECRET_KEY);
+//
+//				String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET_KEY)).build().verify(refreshToken)
+//						.getClaim("username").asString();
+//
+//				User user = userService.getUserByUserName(username);
+//
+//				String accessToken = JWT.create()
+//						.withSubject(user.getUserName())
+//						.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.ACCESS_EXP_TIME))
+//						.withClaim("id", user.getUserId()) // 비공개claim
+//						.withClaim("username", user.getUserName())
+//						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 
-				String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET_KEY)).build().verify(refreshToken)
-						.getClaim("username").asString();
-				
-				User user = userService.getUserByUserName(username);
+				Map<String, String> tokens = principalDetailsService.refresh(refreshToken);
+//				tokens.put("access_token", accessToken);
+//				tokens.put("refresh_token", refreshToken);
+				response.setHeader(JwtProperties.ACCESS_HEADER_STRING, tokens.get(JwtProperties.ACCESS_HEADER_STRING));
+				if (tokens.get(JwtProperties.REFRESH_HEADER_STRING) != null) {
+					response.setHeader(JwtProperties.REFRESH_HEADER_STRING, tokens.get(JwtProperties.REFRESH_HEADER_STRING));
+				}
+//				response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//				new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
-				String accessToken = JWT.create()
-						.withSubject(user.getUserName())
-						.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.ACCESS_EXP_TIME))
-						.withClaim("id", user.getUserId()) // 비공개claim
-						.withClaim("username", user.getUserName())
-						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
-
-				Map<String, String> tokens = new HashMap<>();
-				tokens.put("access_token", accessToken);
-				tokens.put("refresh_token", refreshToken);
-
-				response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-				new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+				return new ResponseEntity<Map<String,String>>(tokens, HttpStatus.OK);
 			} catch (Exception e) {
 //				response.setHeader("error", e.getMessage());
 //				response.setStatus(Forbidden.value());
@@ -150,6 +159,7 @@ public class JwtController {
 //				error.put("error_message", e.getMessage());
 //				response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //				new ObjectMapper().writeValue(response.getOutputStream(), error);
+				return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
 			}
 		} else {
 			throw new RuntimeException("Refresh token is missing");
@@ -157,18 +167,26 @@ public class JwtController {
 	}
 
 	@ApiOperation(value = "로그아웃", notes = "로그아웃에 대한 정보.")
-	@PutMapping("/logout/{userId}")
-	public ResponseEntity<?> logout(@PathVariable("userId") String userId) {
+	@PutMapping("/logout")
+	public ResponseEntity<?> logout(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		User user = principalDetails.getUser();
+		if(user == null) {
+			throw new RuntimeException("no exist user");
+		}
+
+		userService.deleteRefreshToken(user.getUserId());
+
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		try {
-			userService.deleteRefreshToken(userId);
-			resultMap.put("message", "success");
-			status = HttpStatus.ACCEPTED;
-		} catch (Exception e) {
-			resultMap.put("message", "fail");
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+		resultMap.put("message", "success");
+		status = HttpStatus.ACCEPTED;
+//		try {
+//			resultMap.put("message", "success");
+//			status = HttpStatus.ACCEPTED;
+//		} catch (Exception e) {
+//			resultMap.put("message", "fail");
+//			status = HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
 		return new ResponseEntity<>(resultMap, status);
 	}
 }
