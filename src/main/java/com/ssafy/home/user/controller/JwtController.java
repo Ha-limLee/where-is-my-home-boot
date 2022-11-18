@@ -121,7 +121,7 @@ public class JwtController {
 
 	@GetMapping("/token/refresh")
 	public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String authorizationHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+		String authorizationHeader = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
 		if (authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_HEADER_PREFIX)) {
 			try {
@@ -143,9 +143,9 @@ public class JwtController {
 				Map<String, String> tokens = principalDetailsService.refresh(refreshToken);
 //				tokens.put("access_token", accessToken);
 //				tokens.put("refresh_token", refreshToken);
-				response.setHeader(JwtProperties.ACCESS_HEADER_STRING, tokens.get(JwtProperties.ACCESS_HEADER_STRING));
+				response.setHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+tokens.get(JwtProperties.ACCESS_HEADER_STRING));
 				if (tokens.get(JwtProperties.REFRESH_HEADER_STRING) != null) {
-					response.setHeader(JwtProperties.REFRESH_HEADER_STRING, tokens.get(JwtProperties.REFRESH_HEADER_STRING));
+					response.setHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+tokens.get(JwtProperties.REFRESH_HEADER_STRING));
 				}
 //				response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //				new ObjectMapper().writeValue(response.getOutputStream(), tokens);

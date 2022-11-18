@@ -44,7 +44,7 @@
 	
 	<insert id="joinUser" parameterType="user">
 		insert into member (user_id,
-		user_name, user_password, address, phone_number, authority)
+		user_name, user_password, address, phone_number, role)
 		values
 		(#{userId}, #{userName}, #{userPassword}, #{address}, #{phoneNumber},
 		"user")

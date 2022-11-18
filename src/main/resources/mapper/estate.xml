@@ -24,7 +24,16 @@
 
 	</resultMap>
 
-	<select id="getAptListByOption" parameterType="map"
+	<resultMap id="aptSimpleInfo" type="AptSimpleInfoDto">
+		<result column="aptCode" property="aptCode" />
+		<result column="dongCode" property="dongCode" />
+		<result column="buildyear" property="buildyear" />
+		<result column="apartmentName" property="apartmentName" />
+		<result column="lng" property="lng" />
+		<result column="lat" property="lat" />
+	</resultMap>
+
+	<select id="getAptTradeListByOption" parameterType="map"
 		resultMap="aptInfo">
 		select hi.apartmentName, hi.aptCode, hi.buildYear, hi.dongCode,
 		hi.lng, hi.lat, hi.dong, hd.dealAmount, hd.dealYear, hd.dealMonth,
@@ -62,14 +71,6 @@
 		select *
 		from housedeal
 		<where>
-			<!-- <choose>
-				<when test="startyear != null && endyear != null">
-					dealYear between #{startyear} and #{endyear}
-				</when>
-				<when test="startyear" != null>
-				
-				</when>
-			</choose> -->
 			<if test="startyear != null">
 				and dealYear >= #{startyear}
 			</if>
@@ -116,9 +117,11 @@
 		FROM interest
 		where user_id = #{userId}
 		);
-
 	</select>
-	<!-- <sql id="search"> <if test="dong != null"> and gugunName like concat('%', 
-		#{gugun}, '%') and gugunName = #{gugun} </if> <if test="si != null"> and 
-		sidoName like concat('%', #{si}, '%') and sidoName = #{si} </if> </sql> -->
+
+	<select id="getAptListByOption" parameterType="int" resultMap="aptSimpleInfo">
+		select *
+		from houseinfo
+		where dongCode = #{dongCode}
+	</select>
 </mapper>

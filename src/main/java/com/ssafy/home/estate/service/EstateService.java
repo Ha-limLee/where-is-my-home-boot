@@ -3,12 +3,13 @@ package com.ssafy.home.estate.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
 
 public interface EstateService {
 
-	List<AptTradeInfoDto> getAptListByOption(Map<Object, Object> option) throws Exception;
+	List<AptTradeInfoDto> getAptTradeListByOption(Map<Object, Object> option) throws Exception;
 
 	List<String> getSiList() throws Exception;
 
@@ -18,4 +19,5 @@ public interface EstateService {
 
 	List<DongCode> getInterestLocation(String userId) throws Exception;
 
+	List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws Exception;
 }

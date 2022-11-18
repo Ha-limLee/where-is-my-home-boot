@@ -1,9 +1,9 @@
 package com.ssafy.home.estate.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +23,8 @@ public class EstateServiceImpl implements EstateService {
 
 
 	@Override
-	public List<AptTradeInfoDto> getAptListByOption(Map<Object, Object> option) throws Exception {
-		return estateMapper.getAptListByOption(option);
+	public List<AptTradeInfoDto> getAptTradeListByOption(Map<Object, Object> option) throws Exception {
+		return estateMapper.getAptTradeListByOption(option);
 	}
 
 
@@ -49,6 +49,11 @@ public class EstateServiceImpl implements EstateService {
 	@Override
 	public List<DongCode> getInterestLocation(String userId) throws Exception {
 		return estateMapper.getInterestLocation(userId);
+	}
+
+	@Override
+	public List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws Exception {
+		return estateMapper.getAptListByOption(dongCode);
 	}
 
 }

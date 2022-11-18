@@ -3,19 +3,17 @@ package com.ssafy.home.estate.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
+import com.ssafy.home.auth.PrincipalDetails;
+import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.home.board.entity.Article;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
 import com.ssafy.home.estate.service.EstateService;
@@ -38,11 +36,11 @@ public class EstateController {
 	}
 	
 	@ApiOperation(value = "옵션으로 아파트 거래 정보 조회", notes = "아파트이름, 시, 군, 구, 가격(시작~종료), 기간(시작년월~종료년월)")
-	@GetMapping("/apartment")
-	public ResponseEntity<?> getAptList(@RequestParam Map<Object, Object> option) {
+	@GetMapping("/trade/apartment")
+	public ResponseEntity<?> getAptTradeList(@RequestParam Map<Object, Object> option) {
 		
 		try {
-			List<AptTradeInfoDto> aptList = estateService.getAptListByOption(option);
+			List<AptTradeInfoDto> aptList = estateService.getAptTradeListByOption(option);
 			return new ResponseEntity<List<AptTradeInfoDto>>(aptList, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,9 +92,9 @@ public class EstateController {
 	
 	@ApiOperation(value = "유저가 DB에 등록한 관심 지역 목록을 전부 가져옵니다", notes = "관심지역 전체 목록 조회 api")
 	@GetMapping("/interest")
-	public ResponseEntity<?> getInterestLocation(HttpSession session) {
+	public ResponseEntity<?> getInterestLocation(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		User user = (User)session.getAttribute("userinfo");
+		User user = principalDetails.getUser();
 		String userId = user.getUserId();
 		
 		try {
@@ -108,5 +106,16 @@ public class EstateController {
 		}
 	}
 	
-	
+	@GetMapping("/region/apartment")
+	public ResponseEntity<?> getAptListByRegion(@RequestParam int dongCode) {
+
+		List<AptSimpleInfoDto> aptSimpleInfoDtos = null;
+		try {
+			aptSimpleInfoDtos = estateService.getAptListByOption(dongCode);
+			return ResponseEntity.ok(aptSimpleInfoDtos);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("에러 발생", HttpStatus.BAD_REQUEST);
+		}
+	}
 }
