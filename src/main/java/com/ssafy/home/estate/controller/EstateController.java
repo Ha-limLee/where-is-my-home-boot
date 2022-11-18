@@ -5,9 +5,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.ssafy.home.auth.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -94,9 +96,9 @@ public class EstateController {
 	
 	@ApiOperation(value = "유저가 DB에 등록한 관심 지역 목록을 전부 가져옵니다", notes = "관심지역 전체 목록 조회 api")
 	@GetMapping("/interest")
-	public ResponseEntity<?> getInterestLocation(HttpSession session) {
+	public ResponseEntity<?> getInterestLocation(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		User user = (User)session.getAttribute("userinfo");
+		User user = principalDetails.getUser();
 		String userId = user.getUserId();
 		
 		try {
