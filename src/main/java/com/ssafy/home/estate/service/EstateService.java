@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
+import com.ssafy.home.estate.dto.SimpleBuildingDto;
 
 public interface EstateService {
 
@@ -20,4 +21,6 @@ public interface EstateService {
 	List<DongCode> getInterestLocation(String userId) throws Exception;
 
 	List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws Exception;
+
+    List<SimpleBuildingDto> getBuildingListByKeyword(Map<String, Object> options) throws Exception;
 }
