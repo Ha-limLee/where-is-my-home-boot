@@ -1,5 +1,6 @@
 package com.ssafy.home.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 	private String userId;
 	private String userName;

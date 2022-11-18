@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ssafy.home.auth.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -135,16 +137,20 @@ public class UserController {
 //			@ApiImplicitParam(name = "param1", value = "파라미터1", required = true, dataType = "String", paramType = "query"),
 //			@ApiImplicitParam(name = "param2", value = "파마미터2", required = false, dataType = "int", paramType = "query") 
 	})
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<?> getUserInfo(@PathVariable("userId") String userId) {
-		
-		try {
-			User user = userService.getUserInfo(userId);
-			return new ResponseEntity<User> (user, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<String>("getUserDetail Fail", HttpStatus.NOT_ACCEPTABLE);
-		}
+	@GetMapping("/user/mypage")
+	public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+		User user = principalDetails.getUser();
+		UserDto ud = new UserDto();
+		ud.setUserId(user.getUserId());
+		ud.setUserName(user.getUserName());
+		ud.setAddress(user.getAddress());
+		ud.setPhoneNumber(user.getPhoneNumber());
+		return new ResponseEntity<UserDto> (ud, HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return new ResponseEntity<String>("getUserDetail Fail", HttpStatus.NOT_ACCEPTABLE);
+//		}
 	}
 	
 	@ApiOperation(value = "회원리스트", notes = "민감한 정보(비밀번호 등)를 제외한 회원들 가져오기")
