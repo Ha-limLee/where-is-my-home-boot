@@ -37,17 +37,11 @@ public class EstateController {
 		this.estateService = estateService;
 	}
 	
-	@ApiOperation(value = "옵션으로 아파트 거래 정보 조회", notes = "[필수]시, 군(구) [선택] 동, 년, 월, 아파트 이름 검색어로 아파트 거래정보 조회.")
+	@ApiOperation(value = "옵션으로 아파트 거래 정보 조회", notes = "아파트이름, 시, 군, 구, 가격(시작~종료), 기간(시작년월~종료년월)")
 	@GetMapping("/apartment")
 	public ResponseEntity<?> getAptList(@RequestParam Map<Object, Object> option) {
 		
 		try {
-			if(option.containsKey("dealYear")) {
-				option.put("dealYear", Integer.parseInt((String) option.get("dealYear")));
-			}
-			if(option.containsKey("dealMonth")) {
-				option.put("dealMonth", Integer.parseInt((String) option.get("dealMonth")));
-			}
 			List<AptTradeInfoDto> aptList = estateService.getAptListByOption(option);
 			return new ResponseEntity<List<AptTradeInfoDto>>(aptList, HttpStatus.OK);
 		} catch (Exception e) {

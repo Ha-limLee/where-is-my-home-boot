@@ -5,49 +5,86 @@
 <mapper namespace="com.ssafy.home.estate.mapper.EstateMapper">
 
 	<resultMap type="aptTradeInfoDto" id="aptInfo">
-		<result column="aptCode" property="aptCode" />
 		<result column="apartmentName" property="aptName" />
-		<result column="dealAmount" property="price" />
+		<result column="aptCode" property="aptCode" />
+		<result column="buildYear" property="buildYear" />
+		<result column="dongCode" property="dongCode" />
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
+		<result column="dong" property="dong" />
+		<result column="dealAmount" property="price" />
+		<result column="dealYear" property="dealYear" />
+		<result column="dealMonth" property="dealMonth" />
+		<result column="dealDay" property="dealDay" />
+		<result column="area" property="area" />
+		<result column="floor" property="floor" />
 	</resultMap>
 
 	<resultMap type="dongCode" id="dongCodeInfo">
-		
+
 	</resultMap>
+
 	<select id="getAptListByOption" parameterType="map"
 		resultMap="aptInfo">
-		select *
+		select hi.apartmentName, hi.aptCode, hi.buildYear, hi.dongCode,
+		hi.lng, hi.lat, hi.dong, hd.dealAmount, hd.dealYear, hd.dealMonth,
+		hd.dealDay, hd.area, hd.floor
 		from (
 		select *
 		from houseinfo
-		where dongCode in
-		(
-		select dongCode
-		from dongcode
 		<where>
-			sidoName = #{si} and gugunName = #{gugun}
-			<if test="dong != null">
-				and dongName = #{dong}
-			</if>
+			dongCode in
+			(
+			select dongCode
+			from dongcode
+			<where>
+				<choose>
+					<when test="dong != null">
+						dongName = #{dong}
+					</when>
+					<when test="gugun != null">
+						gugunName = #{gugun}
+					</when>
+					<when test="si != null">
+						sidoName = #{si}
+					</when>
+					<otherwise>
+					</otherwise>
+				</choose>
+			</where>
+			)
 			<if test="keyword != null">
 				and apartmentName like concat('%', #{keyword}, '%')
 			</if>
 		</where>
-		))
-		hi join
+		) hi join
 		(
 		select *
 		from housedeal
 		<where>
-			<if test="dealYear != null">
-				and dealYear=#{dealYear}
+			<!-- <choose>
+				<when test="startyear != null && endyear != null">
+					dealYear between #{startyear} and #{endyear}
+				</when>
+				<when test="startyear" != null>
+				
+				</when>
+			</choose> -->
+			<if test="startyear != null">
+				and dealYear >= #{startyear}
 			</if>
-			<if test="dealMonth != null">
-				and dealMonth=#{dealMonth}
+			<if test="startmonth != null">
+				and dealmonth >= #{startmonth}
 			</if>
+				<if test="endyear != null">
+					and dealYear<![CDATA[<]]>=#{endyear}
+				</if>
+				<if test="endmonth != null">
+					and dealmonth<![CDATA[<]]>=#{endmonth}
+				</if>
 		</where>
 		) hd on (hi.aptCode = hd.aptCode)
+
 	</select>
 
 	<select id="getSiList" resultType="string">
@@ -71,10 +108,12 @@
 		<!-- <include refid="search"></include> -->
 	</select>
 
-	<select id="getInterestLocation" parameterType="string" resultMap="dongCodeInfo">
+	<select id="getInterestLocation" parameterType="string"
+		resultMap="dongCodeInfo">
 		select * from dongcode where dongCode in
 		(
-		SELECT dongCode FROM interest
+		SELECT dongCode
+		FROM interest
 		where user_id = #{userId}
 		);
 
