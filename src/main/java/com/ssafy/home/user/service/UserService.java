@@ -3,14 +3,17 @@ package com.ssafy.home.user.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.home.user.dto.UserDto;
 import com.ssafy.home.user.entity.User;
 
 public interface UserService {
 	User loginMember(Map<String, String> map) throws Exception;
 
-	void joinUser(User user) throws Exception;
+	void joinUser(UserDto user) throws Exception;
 
 	User getUserInfo(String userId) throws Exception;
+	
+	User getUserByUserName(String userName) throws Exception;
 	
 	void updateUser(User user) throws Exception;
 
