@@ -96,7 +96,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 						.withClaim("role", principalDetails.getUser().getRole())
 						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 				
-				response.addHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+accessToken);
+				response.setHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+accessToken);
 				
 				String refreshToken = JWT.create()
 						.withSubject(principalDetails.getUser().getUserName())
@@ -104,7 +104,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 						.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 				
 				userService.saveRefreshToken(principalDetails.getUser().getUserId(), refreshToken);
-				response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+refreshToken);
+				response.setHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_HEADER_PREFIX+refreshToken);
 
 		// 응답 body에 기록
 			Map<String, String> responseMap = new HashMap<>();

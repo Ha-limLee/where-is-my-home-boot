@@ -118,4 +118,32 @@ public class EstateServiceImpl implements EstateService {
 		return results;
 	}
 
+	@Override
+	public void addInterestLocation(String userId, String dongCode) throws Exception {
+
+		List<String> interestList = estateMapper.getInterestList(userId);
+
+//		for(String s : interestList) {
+//			System.out.print(s + " : ");
+//		}
+		if(interestList.contains(dongCode)) {
+			throw new IllegalArgumentException("이미 등록된 dongCode입니다.");
+		}
+
+		Map<String, Object> options = new HashMap<>();
+		options.put("userId", userId);
+		options.put("dongCode", dongCode);
+
+		estateMapper.addInterestLocation(options);
+	}
+
+	@Override
+	public void deleteInterestLocation(String userId, String dongCode) throws Exception {
+		Map<String, Object> options = new HashMap<>();
+		options.put("userId", userId);
+		options.put("dongCode", dongCode);
+
+		estateMapper.deleteInterestLocation(options);
+	}
+
 }

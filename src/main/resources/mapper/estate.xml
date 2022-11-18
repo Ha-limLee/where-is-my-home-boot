@@ -51,6 +51,11 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
+<!--	<resultMap id="interest" type="interest">-->
+<!--		<result column="interestcol" property="interestcol" />-->
+<!--		<result column="dongCode" property="dongCode" />-->
+<!--	</resultMap>-->
+
 	<select id="getAptTradeListByOption" parameterType="map"
 		resultMap="aptInfo">
 		select hi.apartmentName, hi.aptCode, hi.buildYear, hi.dongCode,
@@ -174,4 +179,20 @@
 		order by CHAR_LENGTH(name) ASC
 		LIMIT #{limit};
 	</select>
+
+	<select id="getInterestList" parameterType="string" resultType="String">
+		select dongCode
+		from interest
+		where user_id = #{userId}
+	</select>
+	<insert id="addInterestLocation" parameterType="map">
+		insert into interest(user_id, dongCode)
+		values (#{userId}, #{dongCode});
+	</insert>
+
+	<delete id="deleteInterestLocation" parameterType="map">
+		delete
+		from interest
+		where user_id = #{userId} and dongCode = #{dongCode}
+	</delete>
 </mapper>

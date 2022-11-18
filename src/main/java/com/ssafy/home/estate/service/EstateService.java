@@ -23,4 +23,8 @@ public interface EstateService {
 	List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws Exception;
 
     List<SimpleBuildingDto> getBuildingListByKeyword(Map<String, Object> options) throws Exception;
+
+	void addInterestLocation(String userId, String dongCode) throws Exception;
+
+	void deleteInterestLocation(String userId, String dongCode) throws Exception;
 }
