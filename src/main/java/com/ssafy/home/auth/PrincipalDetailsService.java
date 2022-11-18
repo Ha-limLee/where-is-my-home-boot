@@ -43,6 +43,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 	public Map<String, String> refresh(String refreshToken) {
 
+		System.out.println("refresh 함수 시작");
 		// === Refresh Token 유효성 검사 === //
 		JWTVerifier verifier = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET_KEY)).build();
 		DecodedJWT decodedJWT = verifier.verify(refreshToken);
@@ -50,7 +51,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 		// === Access Token 재발급 === //
 		long now = System.currentTimeMillis();
 		String username = decodedJWT.getSubject();
-		User userEntity = userRepository.findByUserId(username)
+		User userEntity = userRepository.findByUserName(username)
 				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 		if (!userEntity.getToken().equals(refreshToken)) {
 			throw new JWTVerificationException("유효하지 않은 Refresh Token 입니다.");
@@ -60,6 +61,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 				.withExpiresAt(new Date(now + JwtProperties.ACCESS_EXP_TIME))
 				.withClaim("id", userEntity.getUserId()) // 비공개claim
 				.withClaim("username", userEntity.getUserName())
+				.withClaim("role", userEntity.getRole())
 				.sign(Algorithm.HMAC512(JwtProperties.SECRET_KEY));
 		Map<String, String> accessTokenResponseMap = new HashMap<>();
 
@@ -68,6 +70,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 		long refreshExpireTime = decodedJWT.getClaim("exp").asLong() * 1000;
 		long diffDays = (refreshExpireTime - now) / 1000 / (24 * 3600); // 남은 일수
 		long diffMin = (refreshExpireTime - now) / 1000 / 60; // 남은 분 수
+		System.out.println(diffDays);
 		if (diffDays < 1) { // refreshToken 유효기간이 1일 미만일 때
 			String newRefreshToken = JWT.create()
 					.withSubject(userEntity.getUserId())
