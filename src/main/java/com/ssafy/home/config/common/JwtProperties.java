@@ -1,4 +1,4 @@
-package com.ssafy.home.common;
+package com.ssafy.home.config.common;
 
 public interface JwtProperties {
 	

@@ -1,6 +1,6 @@
 package com.ssafy.home.news.dto;
 
-import com.ssafy.home.common.NewsProperties;
+import com.ssafy.home.config.common.NewsProperties;
 import lombok.Data;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
