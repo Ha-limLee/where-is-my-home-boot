@@ -104,7 +104,40 @@ public class EstateController {
 			return new ResponseEntity<String>("get dongList Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
+	@PostMapping("/interest/{dongCode}")
+	public ResponseEntity<?> addInterestLocation(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable String dongCode) {
+
+		String userId = principalDetails.getUser().getUserId();
+		System.out.println(dongCode);
+		System.out.println(userId);
+		try {
+			estateService.addInterestLocation(userId, dongCode);
+			return ResponseEntity.ok("insert interest OK");
+		} catch(IllegalArgumentException ia) {
+			return new ResponseEntity<String>(ia.getMessage(), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("insert interest FAIL", HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@DeleteMapping("/interest/{dongCode}")
+	public ResponseEntity<?> deleteInterestLocation(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable String dongCode) {
+
+		String userId = principalDetails.getUser().getUserId();
+		System.out.println(dongCode);
+		System.out.println(userId);
+		try {
+			estateService.deleteInterestLocation(userId, dongCode);
+			return ResponseEntity.ok("delete interest OK");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("delete interest FAIL", HttpStatus.BAD_REQUEST);
+		}
+
+	}
 	@GetMapping("/region/apartment")
 	public ResponseEntity<?> getAptListByRegion(@RequestParam int dongCode) {
 

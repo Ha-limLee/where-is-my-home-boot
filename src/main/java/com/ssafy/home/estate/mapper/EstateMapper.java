@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.estate.dto.AptSimpleInfoDto;
-import com.ssafy.home.estate.entity.BusStation;
-import com.ssafy.home.estate.entity.Business;
-import com.ssafy.home.estate.entity.HouseInfo;
-import com.ssafy.home.estate.entity.SubwayStation;
+import com.ssafy.home.estate.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
@@ -30,7 +27,16 @@ public interface EstateMapper {
 	List<AptSimpleInfoDto> getAptListByOption(int dongCode) throws SQLException;
 
 	List<BusStation> getBusStationByKeywordAndLimit(Map<String, Object> option) throws SQLException;
+
 	List<SubwayStation> getSubwayStationByKeywordAndLimit(Map<String, Object> option) throws SQLException;
+
 	List<HouseInfo> getAptByKeywordAndLimit(Map<String, Object> option) throws SQLException;
+
 	List<Business> getBusinessByKeywordAndLimit(Map<String, Object> option) throws SQLException;
+
+	void addInterestLocation(Map<String, Object> options) throws SQLException;
+
+	List<String> getInterestList(String userId) throws SQLException;
+
+	void deleteInterestLocation(Map<String, Object> options) throws SQLException;
 }
