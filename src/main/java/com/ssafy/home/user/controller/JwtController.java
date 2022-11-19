@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.home.config.common.JwtProperties;
+import com.ssafy.home.common.JwtProperties;
 import com.ssafy.home.user.entity.User;
 import com.ssafy.home.user.service.UserService;
 

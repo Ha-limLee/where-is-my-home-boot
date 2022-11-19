@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.home.auth.PrincipalDetails;
-import com.ssafy.home.config.common.JwtProperties;
+import com.ssafy.home.common.JwtProperties;
 import com.ssafy.home.user.entity.User;
 import com.ssafy.home.user.service.UserService;
 

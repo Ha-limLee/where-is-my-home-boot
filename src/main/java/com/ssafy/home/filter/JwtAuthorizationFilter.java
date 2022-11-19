@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.home.auth.PrincipalDetails;
-import com.ssafy.home.config.common.JwtProperties;
+import com.ssafy.home.common.JwtProperties;
 import com.ssafy.home.user.entity.User;
 import com.ssafy.home.user.repository.UserRepository;
 

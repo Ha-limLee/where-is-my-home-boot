@@ -1,4 +1,4 @@
-package com.ssafy.home.config.common;
+package com.ssafy.home.common;
 
 public interface NewsProperties {
     int DISPLAY=10;
