@@ -151,6 +151,7 @@ public class EstateController {
 		}
 	}
 
+	// keyword -> 이름에 해당 keyword가 속한 지하철역, 버스정류장, 아파트, 주변상권 정보(이름, id, 테이블이름) 리턴
 	@GetMapping("/building/keyword/{keyword}")
 	public ResponseEntity<?> getBuildingListByKeyword(@PathVariable String keyword) {
 
@@ -164,6 +165,19 @@ public class EstateController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("keyword리스트 가져오던 중 에러 발생", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// 특정 위치(위도, 경도) -> 해당 위도 경도 근처에 있는 아파트 목록 리턴
+	@GetMapping("/location/apartment")
+	public ResponseEntity<?> getBuildingListByKeyword(@RequestParam Map<String, Object> options) {
+
+		try {
+			List<SimpleBuildingDto> aptList = estateService.getAptListByLocation(options);
+			return ResponseEntity.ok(aptList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("get aptList from location fail", HttpStatus.BAD_REQUEST);
 		}
 	}
 }

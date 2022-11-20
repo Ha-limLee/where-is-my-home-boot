@@ -46,15 +46,25 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
-	<resultMap id="businessName" type="business">
-		<result column="id" property="id"/>
+	<resultMap id="businessName" type="Business">
+		<result column="id" property="pk"/>
 		<result column="name" property="name"/>
 	</resultMap>
 
+	<resultMap id="estateName" type="RealEstate">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
 <!--	<resultMap id="interest" type="interest">-->
 <!--		<result column="interestcol" property="interestcol" />-->
 <!--		<result column="dongCode" property="dongCode" />-->
 <!--	</resultMap>-->
+
+	<resultMap id="simpleApartData" type="simpleBuildingDto">
+		<result column="aptCode" property="pk" />
+		<result column="apartmentName" property="name" />
+		<result column="distance" property="distance" />
+	</resultMap>
 
 	<select id="getAptTradeListByOption" parameterType="map"
 		resultMap="aptInfo">
@@ -180,6 +190,14 @@
 		LIMIT #{limit};
 	</select>
 
+	<select id="getEstateByKeywordAndLimit" parameterType="map" resultMap="estateName">
+		select id, name
+		from real_estate
+		where name like concat(#{keyword}, '%')
+		order by CHAR_LENGTH(name) ASC
+		LIMIT #{limit};
+	</select>
+
 	<select id="getInterestList" parameterType="string" resultType="String">
 		select dongCode
 		from interest
@@ -195,4 +213,11 @@
 		from interest
 		where user_id = #{userId} and dongCode = #{dongCode}
 	</delete>
+
+	<select id="getAptListByLocation" parameterType="map" resultMap="simpleApartData">
+		SELECT aptCode, apartmentName, ROUND(ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat))) AS distance
+		FROM houseinfo
+		WHERE ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat)) <![CDATA[<]]> #{distance}
+		ORDER BY distance;
+	</select>
 </mapper>
