@@ -44,9 +44,13 @@ public interface EstateMapper {
 
 	void deleteInterestLocation(Map<String, Object> options) throws SQLException;
 
-	List<SimpleBuildingDto> getAptListByLocation(Map<String, Object> options) throws SQLException;
+	List<AptSimpleInfoDto> getAptListByLocation(Map<String, Object> options) throws SQLException;
 
     HouseInfo getAptById(Long aptId) throws SQLException;
 
 	List<HouseDeal> getTradeListByAptId(Long aptId) throws SQLException;
+
+	Business getBusinessById(Long pk) throws SQLException;
+
+	CommercialCode getCommercialCodeBySmallCode(String comCode) throws SQLException;
 }

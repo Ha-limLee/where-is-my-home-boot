@@ -8,6 +8,7 @@ import com.ssafy.home.auth.PrincipalDetails;
 import com.ssafy.home.estate.dto.*;
 import com.ssafy.home.estate.entity.HouseDeal;
 import com.ssafy.home.estate.entity.HouseInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/estate")
 @Api("부동산 컨트롤러 API")
+@Slf4j
 public class EstateController {
 
 	private final EstateService estateService;
@@ -116,7 +118,7 @@ public class EstateController {
 		} catch(IllegalArgumentException ia) {
 			return new ResponseEntity<String>(ia.getMessage(), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("insert interest FAIL", HttpStatus.BAD_REQUEST);
 		}
 
@@ -132,7 +134,7 @@ public class EstateController {
 			estateService.deleteInterestLocation(userId, dongCode);
 			return ResponseEntity.ok("delete interest OK");
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("delete interest FAIL", HttpStatus.BAD_REQUEST);
 		}
 
@@ -145,7 +147,7 @@ public class EstateController {
 			aptSimpleInfoDtos = estateService.getAptListByOption(dongCode);
 			return ResponseEntity.ok(aptSimpleInfoDtos);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("에러 발생", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -162,20 +164,20 @@ public class EstateController {
 			List<SimpleBuildingDto> buildings = estateService.getBuildingListByKeyword(options);
 			return ResponseEntity.ok(buildings);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("keyword리스트 가져오던 중 에러 발생", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	// 특정 위치(위도, 경도) -> 해당 위도 경도 근처에 있는 아파트 목록 리턴
 	@GetMapping("/location/apartment")
-	public ResponseEntity<?> getBuildingListByKeyword(@RequestParam Map<String, Object> options) {
+	public ResponseEntity<?> getBuildingListByLocation(@RequestParam Map<String, Object> options) {
 
 		try {
-			List<SimpleBuildingDto> aptList = estateService.getAptListByLocation(options);
+			List<AptSimpleInfoDto> aptList = estateService.getAptListByLocation(options);
 			return ResponseEntity.ok(aptList);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("get aptList from location fail", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -189,8 +191,22 @@ public class EstateController {
 			AptInfoAndTradeInfo aptInfoAndTradeInfo = new AptInfoAndTradeInfo(houseInfo, houseDeals);
 			return ResponseEntity.ok(aptInfoAndTradeInfo);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return new ResponseEntity<String>("get getAptInfoAndTradeInfoById fail", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/tableName/{tableName}/id/{pk}")
+	public ResponseEntity<?> getAptNearBuilding(@PathVariable("tableName") String tableName,
+												@PathVariable("pk") Long pk,
+												@RequestParam Long distance) {
+
+		try {
+			BuildingInfoAndAptList aptList = estateService.getAptNearBuilding(tableName, pk, distance);
+			return ResponseEntity.ok(aptList);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<String>("get getAptNearBuilding fail", HttpStatus.BAD_REQUEST);
 		}
 	}
 }

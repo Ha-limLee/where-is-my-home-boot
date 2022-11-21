@@ -2,16 +2,12 @@ package com.ssafy.home.estate.service;
 
 import java.util.*;
 
-import com.ssafy.home.estate.dto.AptSimpleInfoDto;
-import com.ssafy.home.estate.dto.SimpleBuildingDto;
+import com.ssafy.home.estate.dto.*;
 import com.ssafy.home.estate.entity.*;
 import com.ssafy.home.estate.mapper.EstateMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ssafy.home.estate.dto.AptTradeInfoDto;
-import com.ssafy.home.estate.dto.DongCode;
 
 @Slf4j
 @Service
@@ -154,16 +150,19 @@ public class EstateServiceImpl implements EstateService {
 	}
 
 	@Override
-	public List<SimpleBuildingDto> getAptListByLocation(Map<String,Object> options) throws Exception {
+	public List<AptSimpleInfoDto> getAptListByLocation(Map<String,Object> options) throws Exception {
 
 		options.put("tableName", ((String)options.get("tableName")).toLowerCase());
-		List<SimpleBuildingDto> aptList = estateMapper.getAptListByLocation(options);
-//		List<SimpleBuildingDto> aptList = estateMapper.selectTest(options);
+		List<AptSimpleInfoDto> aptList = estateMapper.getAptListByLocation(options);
 
-		for(SimpleBuildingDto sbd : aptList) {
-			sbd.setTableName("HouseInfo");
+		for(AptSimpleInfoDto sbd : aptList) {
+//			log.info(String.valueOf(sbd.getDistance()));
 			sbd.setDistance(sbd.getDistance()/1000);
 		}
+
+//		for(AptSimpleInfoDto sbd : aptList) {
+//			System.out.println("distance : " + sbd.getDistance());
+//		}
 		return aptList;
 	}
 
@@ -176,5 +175,57 @@ public class EstateServiceImpl implements EstateService {
 	public List<HouseDeal> getTradeListByAptId(Long aptId) throws Exception {
 		return estateMapper.getTradeListByAptId(aptId);
 	}
+
+	@Override
+	public BuildingInfoAndAptList getAptNearBuilding(String tableName, Long pk, Long distance) throws Exception {
+
+		SimpleBuildingDto simpleBuildingDto = new SimpleBuildingDto();
+		Map<String, Object> location = new HashMap<>();
+		location.put("distance",distance);
+		// 1. 해당 데이터 정보
+		switch(tableName) {
+			case "HouseInfo":
+				HouseInfo houseInfo = estateMapper.getAptById(pk);
+				location.put("lng", houseInfo.getLng());
+				location.put("lat", houseInfo.getLat());
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(houseInfo.getAptCode())
+						.name(houseInfo.getApartmentName())
+						.tableName("HouseInfo")
+						.property("HouseInfo")
+						.build();
+				break;
+			case "Business":
+				Business business = estateMapper.getBusinessById(pk);
+				location.put("lng", business.getLng());
+				location.put("lat", business.getLat());
+				String comCode = business.getSmallCommercialCode();
+
+				CommercialCode cc = estateMapper.getCommercialCodeBySmallCode(comCode);
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(business.getId())
+						.name(business.getName())
+						.tableName("Business")
+						.property(cc.getBigName()+"-"+cc.getMediumName()+"-"+cc.getSmallName())
+						.build();
+				break;
+			case "RealEstate":
+				break;
+			case "BusStation":
+				break;
+			case "SubwayStation":
+				break;
+
+		}
+
+		// 2. 주변 아파트 정보 조회
+		List<AptSimpleInfoDto> aptList = estateMapper.getAptListByLocation(location);
+		for(AptSimpleInfoDto asid : aptList) {
+			asid.setDistance(asid.getDistance()/1000);
+		}
+
+		return new BuildingInfoAndAptList(simpleBuildingDto, aptList);
+	}
+
 
 }

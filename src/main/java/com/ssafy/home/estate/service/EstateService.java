@@ -3,10 +3,7 @@ package com.ssafy.home.estate.service;
 import java.util.List;
 import java.util.Map;
 
-import com.ssafy.home.estate.dto.AptSimpleInfoDto;
-import com.ssafy.home.estate.dto.AptTradeInfoDto;
-import com.ssafy.home.estate.dto.DongCode;
-import com.ssafy.home.estate.dto.SimpleBuildingDto;
+import com.ssafy.home.estate.dto.*;
 import com.ssafy.home.estate.entity.HouseDeal;
 import com.ssafy.home.estate.entity.HouseInfo;
 
@@ -30,9 +27,11 @@ public interface EstateService {
 
 	void deleteInterestLocation(String userId, String dongCode) throws Exception;
 
-    List<SimpleBuildingDto> getAptListByLocation(Map<String,Object> options) throws Exception;
+    List<AptSimpleInfoDto> getAptListByLocation(Map<String,Object> options) throws Exception;
 
 	HouseInfo getAptById(Long aptId) throws Exception;
 
 	List<HouseDeal> getTradeListByAptId(Long aptId) throws Exception;
+
+	BuildingInfoAndAptList getAptNearBuilding(String tableName, Long pk, Long distance) throws Exception;
 }

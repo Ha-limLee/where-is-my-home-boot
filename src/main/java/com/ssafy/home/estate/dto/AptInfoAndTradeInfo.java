@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class AptInfoAndTradeInfo {
-    private HouseInfo houseInfo;
+    private HouseInfo BuildingInfo;
     private List<HouseDeal> houseDealList;
 }

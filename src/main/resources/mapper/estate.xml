@@ -46,7 +46,7 @@
 	<resultMap id="aptSimpleInfo" type="AptSimpleInfoDto">
 		<result column="aptCode" property="aptCode" />
 		<result column="dongCode" property="dongCode" />
-		<result column="buildyear" property="buildyear" />
+		<result column="buildyear" property="buildYear" />
 		<result column="apartmentName" property="apartmentName" />
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
@@ -67,6 +67,13 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
+	<resultMap id="businessInfo" type="business" extends="businessName">
+		<result column="lat" property="lat" />
+		<result column="lng" property="lng" />
+		<result column="address" property="address" />
+		<result column="small_commercial_code" property="smallCommercialCode" />
+	</resultMap>
+
 	<resultMap id="estateName" type="RealEstate">
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
@@ -76,10 +83,23 @@
 <!--		<result column="dongCode" property="dongCode" />-->
 <!--	</resultMap>-->
 
-	<resultMap id="simpleApartData" type="simpleBuildingDto">
-		<result column="aptCode" property="pk" />
-		<result column="apartmentName" property="name" />
+	<resultMap id="simpleApartData" type="AptSimpleInfoDto">
+		<result column="aptCode" property="aptCode" />
+		<result column="apartmentName" property="apartmentName" />
 		<result column="distance" property="distance" />
+		<result column="buildYear" property="buildYear" />
+		<result column="lng" property="lng" />
+		<result column="lat" property="lat" />
+	</resultMap>
+
+	<resultMap id="commercialCodeInfo" type="CommercialCode">
+		<result column="id" property="id" />
+		<result column="big_code" property="bigCode" />
+		<result column="medium_code" property="mediumCode" />
+		<result column="small_code" property="smallCode" />
+		<result column="big_name" property="bigName" />
+		<result column="medium_name" property="mediumName" />
+		<result column="small_name" property="smallName" />
 	</resultMap>
 
 	<select id="getAptTradeListByOption" parameterType="map"
@@ -231,7 +251,7 @@
 	</delete>
 
 	<select id="getAptListByLocation" parameterType="map" resultMap="simpleApartData">
-		SELECT aptCode, apartmentName, ROUND(ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat))) AS distance
+		SELECT aptCode, apartmentName, ROUND(ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat))) AS distance, lng, lat
 		FROM houseinfo
 		WHERE ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat)) <![CDATA[<]]> #{distance}
 		ORDER BY distance;
@@ -243,9 +263,20 @@
 		where aptCode = #{aptId};
 	</select>
 
+	<select id="getBusinessById" parameterType="Long" resultMap="businessInfo">
+		select *
+		from business
+		where id = #{pk};
+	</select>
 	<select id="getTradeListByAptId" parameterType="Long" resultMap="houseDealInfo">
 		select *
 		from housedeal
 		where aptCode = #{aptId};
+	</select>
+
+	<select id="getCommercialCodeBySmallCode" parameterType="string" resultMap="commercialCodeInfo">
+		select *
+		from commercial_code
+		where small_code like concat('%', #{keyword}, '%')
 	</select>
 </mapper>

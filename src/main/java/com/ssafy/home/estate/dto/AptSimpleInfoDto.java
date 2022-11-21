@@ -1,5 +1,6 @@
 package com.ssafy.home.estate.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
@@ -7,11 +8,13 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AptSimpleInfoDto {
     private long aptCode;
     private String dongCode;
-    private int buildyear;
+    private int buildYear;
     private String apartmentName;
     private String lng;
     private String lat;
+    private Double distance;
 }
