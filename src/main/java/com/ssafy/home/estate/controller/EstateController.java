@@ -38,7 +38,8 @@ public class EstateController {
 	@ApiOperation(value = "옵션으로 아파트 거래 정보 조회", notes = "아파트이름, 시, 군, 구, 가격(시작~종료), 기간(시작년월~종료년월)")
 	@GetMapping("/trade/apartment")
 	public ResponseEntity<?> getAptTradeList(@RequestParam Map<Object, Object> option) {
-		
+
+		System.out.println("start getApt");
 		try {
 			List<AptTradeInfoDto> aptList = estateService.getAptTradeListByOption(option);
 			return new ResponseEntity<List<AptTradeInfoDto>>(aptList, HttpStatus.OK);

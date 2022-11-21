@@ -25,7 +25,9 @@
 		<result column="floor" property="floor" />
 	</resultMap>
 
-	<resultMap type="aptTradeInfoDto" id="aptInfo" extends="aptName">
+	<resultMap type="aptTradeInfoDto" id="aptInfo">
+		<result column="apartmentName" property="aptName" />
+		<result column="aptCode" property="aptCode" />
 		<result column="buildYear" property="buildYear" />
 		<result column="dongCode" property="dongCode" />
 		<result column="lng" property="lng" />
@@ -78,10 +80,6 @@
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
 	</resultMap>
-<!--	<resultMap id="interest" type="interest">-->
-<!--		<result column="interestcol" property="interestcol" />-->
-<!--		<result column="dongCode" property="dongCode" />-->
-<!--	</resultMap>-->
 
 	<resultMap id="simpleApartData" type="AptSimpleInfoDto">
 		<result column="aptCode" property="aptCode" />
@@ -137,8 +135,8 @@
 		</where>
 		) hi join
 		(
-		select *
-		from housedeal
+		select aptCode, replace(dealAmount,',','') as dealAmount, dealYear, dealMonth, dealDay, area, floor
+		from housedeal hd
 		<where>
 			<if test="startyear != null">
 				and dealYear >= #{startyear}
@@ -152,6 +150,12 @@
 				<if test="endmonth != null">
 					and dealmonth<![CDATA[<]]>=#{endmonth}
 				</if>
+			<if test="startMoney != null">
+				and convert(replace(dealAmount,',',''), SIGNED) > #{startMoney}
+			</if>
+			<if test="endMoney != null">
+				and convert(replace(dealAmount,',',''), SIGNED)<![CDATA[<]]>=#{endMoney}
+			</if>
 		</where>
 		) hd on (hi.aptCode = hd.aptCode)
 
