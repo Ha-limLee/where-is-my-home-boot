@@ -5,16 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.auth.PrincipalDetails;
-import com.ssafy.home.estate.dto.AptSimpleInfoDto;
-import com.ssafy.home.estate.dto.SimpleBuildingDto;
+import com.ssafy.home.estate.dto.*;
+import com.ssafy.home.estate.entity.HouseDeal;
+import com.ssafy.home.estate.entity.HouseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.home.estate.dto.AptTradeInfoDto;
-import com.ssafy.home.estate.dto.DongCode;
 import com.ssafy.home.estate.service.EstateService;
 import com.ssafy.home.user.entity.User;
 
@@ -178,6 +177,20 @@ public class EstateController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get aptList from location fail", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/apartment/{aptId}")
+	public ResponseEntity<?> getAptInfoAndTradeInfoById(@PathVariable Long aptId) {
+
+		try {
+			HouseInfo houseInfo = estateService.getAptById(aptId);
+			List<HouseDeal> houseDeals = estateService.getTradeListByAptId(aptId);
+			AptInfoAndTradeInfo aptInfoAndTradeInfo = new AptInfoAndTradeInfo(houseInfo, houseDeals);
+			return ResponseEntity.ok(aptInfoAndTradeInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("get getAptInfoAndTradeInfoById fail", HttpStatus.BAD_REQUEST);
 		}
 	}
 }

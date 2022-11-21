@@ -7,6 +7,8 @@ import com.ssafy.home.estate.dto.AptSimpleInfoDto;
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
 import com.ssafy.home.estate.dto.DongCode;
 import com.ssafy.home.estate.dto.SimpleBuildingDto;
+import com.ssafy.home.estate.entity.HouseDeal;
+import com.ssafy.home.estate.entity.HouseInfo;
 
 public interface EstateService {
 
@@ -30,4 +32,7 @@ public interface EstateService {
 
     List<SimpleBuildingDto> getAptListByLocation(Map<String,Object> options) throws Exception;
 
+	HouseInfo getAptById(Long aptId) throws Exception;
+
+	List<HouseDeal> getTradeListByAptId(Long aptId) throws Exception;
 }

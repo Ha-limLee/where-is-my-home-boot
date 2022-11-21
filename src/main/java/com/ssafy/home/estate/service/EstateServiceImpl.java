@@ -167,4 +167,14 @@ public class EstateServiceImpl implements EstateService {
 		return aptList;
 	}
 
+	@Override
+	public HouseInfo getAptById(Long aptId) throws Exception {
+		return estateMapper.getAptById(aptId);
+	}
+
+	@Override
+	public List<HouseDeal> getTradeListByAptId(Long aptId) throws Exception {
+		return estateMapper.getTradeListByAptId(aptId);
+	}
+
 }
