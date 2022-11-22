@@ -1,5 +1,6 @@
 package com.ssafy.home.estate.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
@@ -7,10 +8,22 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class SimpleBuildingDto {
 
-    long pk;
-    String name;
-    String tableName;
+    private long pk;
+    private String name;
+    private String tableName;
+
+    private Double distance;
+
+    private String property;
+
+    private String dongCode;
+
+    private String si;
+    private String gugun;
+    private String dong;
 
 }

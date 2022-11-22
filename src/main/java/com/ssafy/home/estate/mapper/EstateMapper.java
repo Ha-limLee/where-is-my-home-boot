@@ -9,7 +9,7 @@ import com.ssafy.home.estate.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
-import com.ssafy.home.estate.dto.DongCode;
+import com.ssafy.home.estate.entity.DongCode;
 
 @Mapper
 public interface EstateMapper {
@@ -34,9 +34,21 @@ public interface EstateMapper {
 
 	List<Business> getBusinessByKeywordAndLimit(Map<String, Object> option) throws SQLException;
 
+	List<RealEstate> getEstateByKeywordAndLimit(Map<String, Object> options) throws SQLException;
+
 	void addInterestLocation(Map<String, Object> options) throws SQLException;
 
 	List<String> getInterestList(String userId) throws SQLException;
 
 	void deleteInterestLocation(Map<String, Object> options) throws SQLException;
+
+	List<AptSimpleInfoDto> getAptListByLocation(Map<String, Object> options) throws SQLException;
+
+    HouseInfo getAptById(Long aptId) throws SQLException;
+
+	List<HouseDeal> getTradeListByAptId(Long aptId) throws SQLException;
+
+	Business getBusinessById(Long pk) throws SQLException;
+
+	CommercialCode getCommercialCodeBySmallCode(String comCode) throws SQLException;
 }

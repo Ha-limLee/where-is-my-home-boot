@@ -3,8 +3,10 @@ package com.ssafy.home.estate.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AptTradeInfoDto {
@@ -16,7 +18,7 @@ public class AptTradeInfoDto {
 	private String lng;
 	private String lat;
 	private String dong;
-	private String price;
+	private long price;
 	private int dealYear;
 	private int dealMonth;
 	private int dealDay;
