@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.estate.dto.*;
+import com.ssafy.home.estate.entity.DongCode;
 import com.ssafy.home.estate.entity.HouseDeal;
 import com.ssafy.home.estate.entity.HouseInfo;
 

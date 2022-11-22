@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.ssafy.home.auth.PrincipalDetails;
 import com.ssafy.home.estate.dto.*;
+import com.ssafy.home.estate.entity.DongCode;
 import com.ssafy.home.estate.entity.HouseDeal;
 import com.ssafy.home.estate.entity.HouseInfo;
 import lombok.extern.slf4j.Slf4j;

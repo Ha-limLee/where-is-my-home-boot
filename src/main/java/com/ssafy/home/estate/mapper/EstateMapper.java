@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.home.estate.dto.AptSimpleInfoDto;
-import com.ssafy.home.estate.dto.SimpleBuildingDto;
 import com.ssafy.home.estate.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.estate.dto.AptTradeInfoDto;
-import com.ssafy.home.estate.dto.DongCode;
-import org.apache.ibatis.annotations.SelectProvider;
+import com.ssafy.home.estate.entity.DongCode;
 
 @Mapper
 public interface EstateMapper {

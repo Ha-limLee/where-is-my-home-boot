@@ -12,17 +12,18 @@ import lombok.*;
 @Builder
 public class SimpleBuildingDto {
 
-    long pk;
-    String name;
-    String tableName;
+    private long pk;
+    private String name;
+    private String tableName;
 
-    Double distance;
+    private Double distance;
 
     private String property;
 
-    public SimpleBuildingDto(long pk, String name, String tableName) {
-        this.pk = pk;
-        this.name = name;
-        this.tableName = tableName;
-    }
+    private String dongCode;
+
+    private String si;
+    private String gugun;
+    private String dong;
+
 }

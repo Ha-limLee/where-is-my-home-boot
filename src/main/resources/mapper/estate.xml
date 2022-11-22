@@ -7,6 +7,7 @@
 	<resultMap id="aptName" type="houseInfo">
 		<result column="apartmentName" property="apartmentName" />
 		<result column="aptCode" property="aptCode" />
+		<result column="dongCode" property="dongCode" />
 	</resultMap>
 
 	<resultMap id="aptDetailInfo" type="houseInfo" extends="aptName">
@@ -64,9 +65,10 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
-	<resultMap id="businessName" type="Business">
+	<resultMap id="businessName" type="business">
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
+		<result column="dong_code" property="dongCode" />
 	</resultMap>
 
 	<resultMap id="businessInfo" type="business" extends="businessName">
@@ -79,6 +81,7 @@
 	<resultMap id="estateName" type="RealEstate">
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
+		<result column="dong_code" property="dongCode" />
 	</resultMap>
 
 	<resultMap id="simpleApartData" type="AptSimpleInfoDto">
@@ -111,7 +114,7 @@
 		<where>
 			dongCode in
 			(
-			select dongCode
+			select dong_code
 			from dongcode
 			<where>
 				<choose>
@@ -162,20 +165,20 @@
 	</select>
 
 	<select id="getSiList" resultType="string">
-		select distinct sidoName
+		select distinct sido_name
 		from
 		dongcode;
 	</select>
 
 	<select id="getGuGunList" resultType="string">
-		select distinct gugunName
+		select distinct gugun_name
 		from dongcode
 		where gugunName is not null and sidoName like concat('%',
 		#{si}, '%')
 	</select>
 
 	<select id="getDongList" parameterType="map" resultType="string">
-		select dongName
+		select dong_name
 		from dongcode
 		where dongName is not null and gugunName =
 		#{gugun} and sidoName = #{si}
@@ -215,7 +218,7 @@
 	</select>
 
 	<select id="getAptByKeywordAndLimit" parameterType="map" resultMap="aptName">
-		select aptCode, apartmentName
+		select aptCode, apartmentName, dongCode
 		from houseinfo
 		where apartmentName like concat(#{keyword}, '%')
 		order by CHAR_LENGTH(apartmentName) ASC
@@ -223,7 +226,7 @@
 	</select>
 
 	<select id="getBusinessByKeywordAndLimit" parameterType="map" resultMap="businessName">
-		select id, name
+		select id, name, dong_code
 		from business
 		where name like concat(#{keyword}, '%')
 		order by CHAR_LENGTH(name) ASC
@@ -231,7 +234,7 @@
 	</select>
 
 	<select id="getEstateByKeywordAndLimit" parameterType="map" resultMap="estateName">
-		select id, name
+		select id, name, dong_code
 		from real_estate
 		where name like concat(#{keyword}, '%')
 		order by CHAR_LENGTH(name) ASC
