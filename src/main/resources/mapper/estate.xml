@@ -119,13 +119,13 @@
 			<where>
 				<choose>
 					<when test="dong != null">
-						dongName = #{dong}
+						dong_name = #{dong}
 					</when>
 					<when test="gugun != null">
-						gugunName = #{gugun}
+						gugun_name = #{gugun}
 					</when>
 					<when test="si != null">
-						sidoName = #{si}
+						sido_name = #{si}
 					</when>
 					<otherwise>
 					</otherwise>
@@ -173,21 +173,21 @@
 	<select id="getGuGunList" resultType="string">
 		select distinct gugun_name
 		from dongcode
-		where gugunName is not null and sidoName like concat('%',
+		where gugun_name is not null and sido_name like concat('%',
 		#{si}, '%')
 	</select>
 
 	<select id="getDongList" parameterType="map" resultType="string">
 		select dong_name
 		from dongcode
-		where dongName is not null and gugunName =
-		#{gugun} and sidoName = #{si}
+		where dong_name is not null and gugun_name =
+		#{gugun} and sido_name = #{si}
 		<!-- <include refid="search"></include> -->
 	</select>
 
 	<select id="getInterestLocation" parameterType="string"
 		resultMap="dongCodeInfo">
-		select * from dongcode where dongCode in
+		select * from dongcode where dong_code in
 		(
 		SELECT dongCode
 		FROM interest
