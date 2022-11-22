@@ -77,7 +77,7 @@ public class EstateServiceImpl implements EstateService {
 		List<SubwayStation> sStations = estateMapper.getSubwayStationByKeywordAndLimit(options);
 		log.info("sStations : " + sStations.size());
 		for (SubwayStation s: sStations) {
-			SimpleBuildingDto sbd = new SimpleBuildingDto().builder()
+			SimpleBuildingDto sbd = SimpleBuildingDto.builder()
 					.pk(s.getId())
 					.name(s.getName())
 					.tableName("SubwayStation")
@@ -89,7 +89,7 @@ public class EstateServiceImpl implements EstateService {
 		List<BusStation> bStations = estateMapper.getBusStationByKeywordAndLimit(options);
 		log.info("bStations : " + bStations.size());
 		for (BusStation b: bStations) {
-			SimpleBuildingDto sbd = new SimpleBuildingDto().builder()
+			SimpleBuildingDto sbd = SimpleBuildingDto.builder()
 					.pk(b.getId())
 					.name(b.getName())
 					.tableName("BusStation")
@@ -101,7 +101,7 @@ public class EstateServiceImpl implements EstateService {
 		List<Business> businessList = estateMapper.getBusinessByKeywordAndLimit(options);
 		log.info("businessList : " + businessList.size());
 		for (Business b: businessList) {
-			SimpleBuildingDto sbd = new SimpleBuildingDto().builder()
+			SimpleBuildingDto sbd = SimpleBuildingDto.builder()
 					.pk(b.getId())
 					.name(b.getName())
 					.tableName("Business")
@@ -114,7 +114,7 @@ public class EstateServiceImpl implements EstateService {
 		List<HouseInfo> aptList = estateMapper.getAptByKeywordAndLimit(options);
 		log.info("aptList : " + aptList.size());
 		for (HouseInfo h: aptList) {
-			SimpleBuildingDto sbd = new SimpleBuildingDto().builder()
+			SimpleBuildingDto sbd = SimpleBuildingDto.builder()
 					.pk((long)h.getAptCode())
 					.name(h.getApartmentName())
 					.tableName("HouseInfo")
@@ -127,7 +127,7 @@ public class EstateServiceImpl implements EstateService {
 		List<RealEstate> estateList = estateMapper.getEstateByKeywordAndLimit(options);
 		log.info("estateList : " + estateList.size());
 		for(RealEstate r : estateList) {
-			SimpleBuildingDto sbd = new SimpleBuildingDto().builder()
+			SimpleBuildingDto sbd = SimpleBuildingDto.builder()
 					.pk((long)r.getId())
 					.name(r.getName())
 					.tableName("RealEstate")
@@ -249,6 +249,8 @@ public class EstateServiceImpl implements EstateService {
 						.name(houseInfo.getApartmentName())
 						.tableName("HouseInfo")
 						.property("HouseInfo")
+						.lat(houseInfo.getLat())
+						.lng(houseInfo.getLng())
 						.build();
 				break;
 			case "Business":
@@ -262,14 +264,40 @@ public class EstateServiceImpl implements EstateService {
 						.pk(business.getId())
 						.name(business.getName())
 						.tableName("Business")
+						.lat(business.getLat())
+						.lng(business.getLng())
 						.property(cc.getBigName()+"-"+cc.getMediumName()+"-"+cc.getSmallName())
 						.build();
 				break;
 			case "RealEstate":
+				RealEstate re = estateMapper.getEstateById(pk);
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(re.getId())
+						.name(re.getName())
+						.tableName("RealEstate")
+						.lat(re.getAddress())
+						.lng(re.getAddress())
+						.build();
 				break;
 			case "BusStation":
+				BusStation bs = estateMapper.getBusStationById(pk);
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(bs.getId())
+						.name(bs.getName())
+						.tableName("BusStation")
+						.lat(bs.getLat())
+						.lng(bs.getLng())
+						.build();
 				break;
 			case "SubwayStation":
+				SubwayStation ss = estateMapper.getSubwayStationById(pk);
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(ss.getId())
+						.name(ss.getName())
+						.tableName("SubwayStation")
+						.lat(ss.getLat())
+						.lng(ss.getLng())
+						.build();
 				break;
 
 		}
