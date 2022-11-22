@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,14 +39,12 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 
-	@ApiOperation(value = "공지사항 전체 조회", notes = "공지사항 글 전체 조회 API.")
+	@ApiOperation(value = "글 전체 조회", notes = "글 전체 조회 API.")
 	@GetMapping
-	public ResponseEntity<?> getNoticeList(@RequestParam Map<String, String> options) {
+	public ResponseEntity<?> getBoardList(@RequestParam Map<String, String> options) {
 		try {
-			String articleType = options.getOrDefault("type", "");
-			System.out.println(articleType);
-			List<BoardArticleDto> boardList = boardService.getBoardList(articleType);
-			return new ResponseEntity<List<BoardArticleDto>>(boardList, HttpStatus.OK);
+			Page<Article> boardList = boardService.getBoardList(options);
+			return ResponseEntity.ok(boardList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
@@ -66,10 +66,9 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 추가", notes = "공지사항 글 추가 API.")
 	@PostMapping
-	public ResponseEntity<?> addNotice(@RequestBody Article notice) {
+	public ResponseEntity<?> addNotice(@RequestBody Map<String, String> options) {
 		try {
-			System.out.println(notice);
-			boardService.addNotice(notice);
+			boardService.addNotice(options);
 			return new ResponseEntity<String>("addNotice OK", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,17 +1,19 @@
 package com.ssafy.home.board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.home.board.dto.BoardArticleDto;
 import com.ssafy.home.board.entity.Article;
+import org.springframework.data.domain.Page;
 
 public interface BoardService {
 
-	public List<BoardArticleDto> getBoardList(String articleType) throws Exception;
+	public Page<Article> getBoardList(Map<String, String> options) throws Exception;
 
 	public BoardArticleDto getNoticeDetail(String number) throws Exception;
 
-	public void addNotice(Article notice) throws Exception;
+	public void addNotice(Map<String, String> options) throws Exception;
 
 	public void updateNotice(String number, Article notice) throws Exception;
 

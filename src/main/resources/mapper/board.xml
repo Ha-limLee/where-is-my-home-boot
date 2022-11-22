@@ -44,7 +44,7 @@
 		where article_no = #{num}
 	</update>
 
-	<insert id="addNotice" parameterType="article">
+	<insert id="addNotice" parameterType="map">
 		insert into board(user_id,
 		subject, content, hit, register_time, article_prop)
 		values (#{userId}, #{subject},
