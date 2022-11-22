@@ -51,4 +51,10 @@ public interface EstateMapper {
 	Business getBusinessById(Long pk) throws SQLException;
 
 	CommercialCode getCommercialCodeBySmallCode(String comCode) throws SQLException;
+
+	RealEstate getEstateById(Long pk) throws SQLException;
+
+	BusStation getBusStationById(Long pk) throws SQLException;
+
+	SubwayStation getSubwayStationById(Long pk) throws SQLException;
 }
