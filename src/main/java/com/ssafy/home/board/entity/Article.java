@@ -29,8 +29,8 @@ public class Article {
 	private int hit;
 	private Timestamp registerTime;
 
-//	@ManyToOne(fetch = FetchType.LAZY)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+//	@ManyToOne
 	@JoinColumn(name = "article_prop")
 	private ArticleProp articleProp;
 

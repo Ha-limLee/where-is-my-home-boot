@@ -26,4 +26,5 @@ public interface BoardMapper {
 
 	List<String> getArticleType() throws SQLException;
 
+    int getTotalArticleNum() throws SQLException;
 }

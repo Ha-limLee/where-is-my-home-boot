@@ -1,5 +1,6 @@
 package com.ssafy.home.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,10 +42,17 @@ public class BoardController {
 
 	@ApiOperation(value = "글 전체 조회", notes = "글 전체 조회 API.")
 	@GetMapping
-	public ResponseEntity<?> getBoardList(@RequestParam Map<String, String> options) {
+	public ResponseEntity<?> getBoardList(@RequestParam(value="page", defaultValue="0") Integer page
+			, @RequestParam(value="size", defaultValue="10") Integer size, @RequestParam(value="type", defaultValue="default") String type) {
+		Map<String, String> options = new HashMap<>();
+		options.put("page", String.valueOf(page));
+		options.put("size", String.valueOf(size));
+		options.put("type", type);
+
 		try {
-			Page<Article> boardList = boardService.getBoardList(options);
-			return ResponseEntity.ok(boardList);
+			Map<String, Object> result = boardService.getBoardList(options);
+
+			return ResponseEntity.ok(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
