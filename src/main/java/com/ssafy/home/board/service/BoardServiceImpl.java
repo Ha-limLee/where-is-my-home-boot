@@ -12,6 +12,7 @@ import com.ssafy.home.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Map<String, Object> getBoardList(Map<String, String> options) throws Exception {
-		PageRequest pageRequest = PageRequest.of(Integer.parseInt(options.get("page")), Integer.parseInt(options.get("size")));
+		PageRequest pageRequest = PageRequest.of(Integer.parseInt(options.get("page")), Integer.parseInt(options.get("size")), Sort.by("registerTime").descending());
 		Map<String, User> userIdList = new HashMap<>();
 		Page<Article> pageArticleList = null;
 		Map<Integer, ArticleProp> propMap = new HashMap<>();
