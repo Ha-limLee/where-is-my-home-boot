@@ -206,5 +206,18 @@ public class UserController {
 			return new ResponseEntity<String>("delete Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
+	@PostMapping("/passwordCheck")
+	public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> options, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+		User user = principalDetails.getUser();
+
+		String password = options.get("password");
+
+		if(passwordEncoder.matches(password, user.getUserPassword())) {
+			return ResponseEntity.ok("ok");
+		} else {
+			return new ResponseEntity<String>("fail", HttpStatus.UNAUTHORIZED);
+		}
+	}
 }
