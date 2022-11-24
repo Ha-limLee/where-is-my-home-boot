@@ -87,6 +87,7 @@ public class BoardServiceImpl implements BoardService {
 			userIdList.put(u.getUserId(), u);
 		}
 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		for(Article a : all) {
 			BoardArticleDto bad = BoardArticleDto.builder()
 					.articleNo(a.getArticleNo())
@@ -95,7 +96,7 @@ public class BoardServiceImpl implements BoardService {
 					.subject(a.getSubject())
 					.hit(a.getHit())
 //					.registerTime(getDateStr(a.getRegisterTime(), BoardProperties.TIME_FORMAT))
-					.registerTime(a.getRegisterTime().toString())
+					.registerTime(sdf.format(a.getRegisterTime()))
 					.articlePropId(a.getArticleProp().getId())
 					.articlePropName(propMap.get(a.getArticleProp().getId()).getPropName())
 					.build();

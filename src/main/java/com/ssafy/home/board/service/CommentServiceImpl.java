@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.home.board.dto.UserCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +23,19 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDto> getCommentList(String articleNo) throws Exception {
+	public List<UserCommentDto> getCommentList(String articleNo) throws Exception {
 		int number = Integer.parseInt(articleNo);
-		List<Comment> comment = commentMapper.getCommentList(number);
-		List<CommentDto> commentDtos = new ArrayList<>();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		for(Comment c : comment) {
-			String date = sdf.format(c.getRegisterDate());
-			CommentDto cd = new CommentDto(c.getId(), date, c.getContent(), c.getUserId(), number);
-			commentDtos.add(cd);
-		}
-		return commentDtos;
+//		List<Comment> comment = commentMapper.getCommentList(number);
+		List<UserCommentDto> commentList = commentMapper.getCommentList(number);
+//		List<CommentDto> commentDtos = new ArrayList<>();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		for(Comment c : comment) {
+//			String date = sdf.format(c.getRegisterDate());
+//			CommentDto cd = new CommentDto(c.getId(), date, c.getContent(), c.getUserId(), number);
+//			commentDtos.add(cd);
+//		}
+		return commentList;
 	}
 
 	@Override
