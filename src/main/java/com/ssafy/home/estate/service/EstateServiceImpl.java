@@ -5,7 +5,9 @@ import java.util.*;
 import com.ssafy.home.estate.dto.*;
 import com.ssafy.home.estate.entity.*;
 import com.ssafy.home.estate.mapper.EstateMapper;
+import com.ssafy.home.estate.repository.BusStationRepository;
 import com.ssafy.home.estate.repository.DongCodeRepository;
+import com.ssafy.home.estate.repository.SubwayStationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,17 @@ public class EstateServiceImpl implements EstateService {
 
 	private final EstateMapper estateMapper;
 	private final DongCodeRepository dongCodeRepository;
+	private final SubwayStationRepository subwayStationRepository;
+	private final BusStationRepository busStationRepository;
 
 	@Autowired
-	public EstateServiceImpl(EstateMapper estateMapper, DongCodeRepository dongCodeRepository) {
+	public EstateServiceImpl(EstateMapper estateMapper, DongCodeRepository dongCodeRepository, SubwayStationRepository subwayStationRepository, BusStationRepository busStationRepository) {
 		this.estateMapper = estateMapper;
 		this.dongCodeRepository = dongCodeRepository;
+		this.subwayStationRepository = subwayStationRepository;
+		this.busStationRepository = busStationRepository;
 	}
+
 
 	@Override
 	public List<AptTradeInfoDto> getAptTradeListByOption(Map<Object, Object> option) throws Exception {
@@ -266,10 +273,32 @@ public class EstateServiceImpl implements EstateService {
 						.build();
 				break;
 			case "RealEstate":
+
 				break;
 			case "BusStation":
+				int intPk = Long.valueOf(pk).intValue();
+				BusStation bStation = busStationRepository.findById(intPk).get();
+				location.put("lng", bStation.getLng());
+				location.put("lat", bStation.getLat());
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(bStation.getId())
+						.name(bStation.getName())
+						.tableName("BusStation")
+						.property("BusStation")
+						.build();
 				break;
+
 			case "SubwayStation":
+				intPk = Long.valueOf(pk).intValue();
+				SubwayStation sStation = subwayStationRepository.findById(intPk).get();
+				location.put("lng", sStation.getLng());
+				location.put("lat", sStation.getLat());
+				simpleBuildingDto = SimpleBuildingDto.builder()
+						.pk(sStation.getId())
+						.name(sStation.getName())
+						.tableName("SubwayStation")
+						.property("SubwayStation")
+						.build();
 				break;
 
 		}

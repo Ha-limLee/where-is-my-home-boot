@@ -261,7 +261,7 @@
 	</delete>
 
 	<select id="getAptListByLocation" parameterType="map" resultMap="simpleApartData">
-		SELECT aptCode, apartmentName, ROUND(ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat))) AS distance, lng, lat
+		SELECT buildYear, aptCode, apartmentName, ROUND(ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat))) AS distance, lng, lat
 		FROM houseinfo
 		WHERE ST_Distance_Sphere(Point(#{lng},#{lat}), POINT(lng, lat)) <![CDATA[<]]> #{distance}
 		ORDER BY distance;
