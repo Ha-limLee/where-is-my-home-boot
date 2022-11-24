@@ -59,7 +59,7 @@ public class BoardController {
 		}
 	}
 
-	@ApiOperation(value = "공지사항 글 하나 조회", notes = "공지사항 글 하나만 조회 API.")
+	@ApiOperation(value = "글 하나 조회", notes = "글 하나만 조회 API.")
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
