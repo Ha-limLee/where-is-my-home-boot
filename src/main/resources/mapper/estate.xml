@@ -43,7 +43,10 @@
 	</resultMap>
 
 	<resultMap type="dongCode" id="dongCodeInfo">
-
+		<result column="dong_code" property="dongCode" />
+		<result column="sido_name" property="sidoName" />
+		<result column="gugun_name" property="gugunName" />
+		<result column="dong_name" property="dongName" />
 	</resultMap>
 
 	<resultMap id="aptSimpleInfo" type="AptSimpleInfoDto">
