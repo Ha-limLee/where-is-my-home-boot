@@ -20,7 +20,7 @@ public interface BoardMapper {
 
 	void increaseHit(int num) throws SQLException;
 
-	void updateNotice(Map<Object, Object> map) throws SQLException;
+	void updateNotice(Map<String, Object> map) throws SQLException;
 
 	void deleteNotice(int num) throws SQLException;
 

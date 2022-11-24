@@ -86,10 +86,11 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 수정", notes = "공지사항 글 수정 API.")
 	@PutMapping("/{noticeNum}")
-	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Article notice) {
+	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Map<String, Object> options) {
 
 		try {
-			boardService.updateNotice(number, notice);
+
+			boardService.updateNotice(number, options);
 			return new ResponseEntity<String>("updateNotice OK", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

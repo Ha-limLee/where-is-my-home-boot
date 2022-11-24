@@ -126,14 +126,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateNotice(String number, Article notice) throws Exception {
+	public void updateNotice(String number, Map<String, Object> options) throws Exception {
 		int num = Integer.parseInt(number);
-		Map<Object, Object> map = new HashMap<>();
-		map.put("num", num);
-		map.put("subject", notice.getSubject());
-		map.put("content", notice.getContent());
-		map.put("articleProp", notice.getArticleProp());
-		boardMapper.updateNotice(map);
+//		Map<String, Object> map = new HashMap<>();
+		options.put("num", num);
+//		map.put("subject", options.get("subject"));
+//		map.put("content", options.get("content"));
+		options.put("articleProp", (int)options.get("articleProp"));
+		boardMapper.updateNotice(options);
 	}
 
 	@Override
