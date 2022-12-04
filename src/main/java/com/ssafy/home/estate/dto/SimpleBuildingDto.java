@@ -26,4 +26,6 @@ public class SimpleBuildingDto {
     private String gugun;
     private String dong;
 
+    private String lng;
+    private String lat;
 }

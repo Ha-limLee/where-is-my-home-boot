@@ -63,9 +63,19 @@
 		<result column="name" property="name"/>
 	</resultMap>
 
+	<resultMap id="bStationInfo" type="busStation" extends="bStationName">
+		<result column="lat" property="lat"/>
+		<result column="lng" property="lng"/>
+	</resultMap>
+
 	<resultMap id="sStationName" type="subwayStation">
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
+	</resultMap>
+
+	<resultMap id="sStationInfo" type="subwayStation" extends="sStationName">
+		<result column="lat" property="lat"/>
+		<result column="lng" property="lng"/>
 	</resultMap>
 
 	<resultMap id="businessName" type="business">
@@ -85,6 +95,10 @@
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="dong_code" property="dongCode" />
+	</resultMap>
+
+	<resultMap id="realEstateInfo" type="RealEstate" extends="estateName">
+		<result column="address" property="address" />
 	</resultMap>
 
 	<resultMap id="simpleApartData" type="AptSimpleInfoDto">
@@ -288,5 +302,23 @@
 		select *
 		from commercial_code
 		where small_code like concat('%', #{keyword}, '%')
+	</select>
+
+	<select id="getEstateById" parameterType="Long" resultMap="realEstateInfo">
+		select *
+		from real_estate
+		where id = #{pk};
+	</select>
+
+	<select id="getBusStationById" parameterType="Long" resultMap="bStationInfo">
+		select *
+		from bus_station
+		where id=#{pk};
+	</select>
+
+	<select id="getSubwayStationById" parameterType="Long" resultMap="sStationInfo">
+		select *
+		from subway_station
+		where id=#{pk};
 	</select>
 </mapper>
