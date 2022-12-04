@@ -3,11 +3,12 @@ package com.ssafy.home.board.service;
 import java.util.List;
 
 import com.ssafy.home.board.dto.CommentDto;
+import com.ssafy.home.board.dto.UserCommentDto;
 import com.ssafy.home.board.entity.Comment;
 
 public interface CommentService {
 
-	List<CommentDto> getCommentList(String articleNo) throws Exception;
+	List<UserCommentDto> getCommentList(String articleNo) throws Exception;
 
 	void createComment(Comment comment) throws Exception;
 

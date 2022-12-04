@@ -1,9 +1,12 @@
 package com.ssafy.home.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,21 +40,26 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 
-	@ApiOperation(value = "공지사항 전체 조회", notes = "공지사항 글 전체 조회 API.")
+	@ApiOperation(value = "글 전체 조회", notes = "글 전체 조회 API.")
 	@GetMapping
-	public ResponseEntity<?> getNoticeList(@RequestParam Map<String, String> options) {
+	public ResponseEntity<?> getBoardList(@RequestParam(value="page", defaultValue="0") Integer page
+			, @RequestParam(value="size", defaultValue="10") Integer size, @RequestParam(value="type", defaultValue="default") String type) {
+		Map<String, String> options = new HashMap<>();
+		options.put("page", String.valueOf(page));
+		options.put("size", String.valueOf(size));
+		options.put("type", type);
+
 		try {
-			String articleType = options.getOrDefault("type", "");
-			System.out.println(articleType);
-			List<BoardArticleDto> boardList = boardService.getBoardList(articleType);
-			return new ResponseEntity<List<BoardArticleDto>>(boardList, HttpStatus.OK);
+			Map<String, Object> result = boardService.getBoardList(options);
+
+			return ResponseEntity.ok(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
-	@ApiOperation(value = "공지사항 글 하나 조회", notes = "공지사항 글 하나만 조회 API.")
+	@ApiOperation(value = "글 하나 조회", notes = "글 하나만 조회 API.")
 	@GetMapping("/{noticeNum}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("noticeNum") String number) {
 		try {
@@ -66,10 +74,9 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 추가", notes = "공지사항 글 추가 API.")
 	@PostMapping
-	public ResponseEntity<?> addNotice(@RequestBody Article notice) {
+	public ResponseEntity<?> addNotice(@RequestBody Map<String, String> options) {
 		try {
-			System.out.println(notice);
-			boardService.addNotice(notice);
+			boardService.addNotice(options);
 			return new ResponseEntity<String>("addNotice OK", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,10 +86,11 @@ public class BoardController {
 
 	@ApiOperation(value = "공지사항 글 수정", notes = "공지사항 글 수정 API.")
 	@PutMapping("/{noticeNum}")
-	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Article notice) {
+	public ResponseEntity<?> updateNotice(@PathVariable("noticeNum") String number, @RequestBody Map<String, Object> options) {
 
 		try {
-			boardService.updateNotice(number, notice);
+
+			boardService.updateNotice(number, options);
 			return new ResponseEntity<String>("updateNotice OK", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

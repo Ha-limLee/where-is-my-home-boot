@@ -4,19 +4,19 @@
 
 <mapper namespace="com.ssafy.home.board.mapper.CommentMapper">
 
-	<resultMap type="comment" id="commentInfo">
+	<resultMap type="UserCommentDto" id="commentInfo">
 		<result column="id" property="id" />
 		<result column="register_date" property="registerDate" />
 		<result column="content" property="content" />
 		<result column="user_id" property="userId" />
+		<result column="role" property="userRole" />
 	</resultMap>
 
 	<select id="getCommentList" parameterType="int"
 		resultMap="commentInfo">
-		select id, register_date, content, user_id
-		from comment
-		where
-		article_id = #{number}
+		SELECT c.id, c.register_date, c.user_id, c.content, m.role
+		FROM comment c join member m on (c.user_id = m.user_id)
+		where c.article_id = #{number};
 	</select>
 
 	<insert id="createComment" parameterType="comment">

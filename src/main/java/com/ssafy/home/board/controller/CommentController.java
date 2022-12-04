@@ -2,6 +2,7 @@ package com.ssafy.home.board.controller;
 
 import java.util.List;
 
+import com.ssafy.home.board.dto.UserCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,8 @@ public class CommentController {
 	@GetMapping("/article/{no}")
 	public ResponseEntity<?> getCommentList(@PathVariable("no") String articleNo) {
 		try {
-			List<CommentDto> comments = commentService.getCommentList(articleNo);
-			return new ResponseEntity<List<CommentDto>>(comments, HttpStatus.OK);
+			List<UserCommentDto> comments = commentService.getCommentList(articleNo);
+			return ResponseEntity.ok(comments);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("comment List Fail", HttpStatus.OK);

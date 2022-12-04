@@ -16,14 +16,15 @@ public interface BoardMapper {
 
 	BoardArticleDto getNoticeDetail(int num) throws SQLException;
 
-	void addNotice(Article notice) throws SQLException;
+	void addNotice(Map<String, String> options) throws SQLException;
 
 	void increaseHit(int num) throws SQLException;
 
-	void updateNotice(Map<Object, Object> map) throws SQLException;
+	void updateNotice(Map<String, Object> map) throws SQLException;
 
 	void deleteNotice(int num) throws SQLException;
 
 	List<String> getArticleType() throws SQLException;
 
+    int getTotalArticleNum() throws SQLException;
 }
