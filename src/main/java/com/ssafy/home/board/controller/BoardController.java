@@ -58,6 +58,25 @@ public class BoardController {
 			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
+	
+	@ApiOperation(value = "공지사항을 제외한 글 전체 조회", notes = "공지사항을 제외한 글 전체 조회 API.")
+	@GetMapping("/not-notice")
+	public ResponseEntity<?> getBoardListNotNotice(@RequestParam(value="page", defaultValue="0") Integer page
+			, @RequestParam(value="size", defaultValue="10") Integer size, @RequestParam(value="type", defaultValue="default") String type) {
+		Map<String, String> options = new HashMap<>();
+		options.put("page", String.valueOf(page));
+		options.put("size", String.valueOf(size));
+		options.put("type", type);
+
+		try {
+			Map<String, Object> result = boardService.getBoardListNotNotice(options);
+
+			return ResponseEntity.ok(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("get Board Fail", HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
 
 	@ApiOperation(value = "글 하나 조회", notes = "글 하나만 조회 API.")
 	@GetMapping("/{noticeNum}")

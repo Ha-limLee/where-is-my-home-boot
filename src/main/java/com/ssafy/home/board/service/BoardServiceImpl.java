@@ -3,6 +3,7 @@ package com.ssafy.home.board.service;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ssafy.home.board.entity.ArticleProp;
 import com.ssafy.home.board.repository.ArticlePropRepository;
@@ -111,6 +112,82 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
+	@Override
+	public Map<String, Object> getBoardListNotNotice(Map<String, String> options) throws Exception {
+		PageRequest pageRequest = PageRequest.of(Integer.parseInt(options.get("page")), Integer.parseInt(options.get("size")), Sort.by("registerTime").descending());
+		Map<String, User> userIdList = new HashMap<>();
+		Page<Article> pageArticleList = null;
+		Map<Integer, ArticleProp> propMap = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
+
+
+		ArticleProp articleProp = null;
+		List<Article> all = new ArrayList<>();
+
+		List<BoardArticleDto> articleDtoList = new ArrayList<>();
+		
+
+		List<ArticleProp> allProps = articlePropRepository.findAll().stream().filter(x -> !x.getPropName().equals("공지사항")).collect(Collectors.toList());
+		for(ArticleProp ap : allProps) {
+			propMap.put(ap.getId(), ap);
+		}
+
+		// 글 속성값이 넘어오지 않았을 떄
+		if(options.get("type").equals("default")) {
+			pageArticleList = articleRepository.findByArticlePropIn(allProps, pageRequest);
+			all = pageArticleList.getContent();
+		} else {
+
+			for(ArticleProp ap : allProps) {
+				if(options.get("type").equals(ap.getPropName())) {
+					articleProp = ap;
+					break;
+				}
+			}
+
+			if(articleProp == null) { // 글 속성 값이 테이블에 없을 떄
+				pageArticleList = articleRepository.findByArticlePropIn(allProps, pageRequest);
+				all = pageArticleList.getContent();
+			} else { // 글 속성 값이 테이블에 있을 때
+				pageArticleList = articleRepository.findByArticlePropIn(List.of(articleProp), pageRequest);
+				all = pageArticleList.getContent();
+			}
+		}
+
+		for(Article a : all) {
+			userIdList.put(a.getUserId(), null);
+		}
+
+		List<User> userList = userRepository.findByUserIdIn(new ArrayList<>(userIdList.keySet()));
+
+		for(User u : userList) {
+			userIdList.put(u.getUserId(), u);
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		for(Article a : all) {
+			BoardArticleDto bad = BoardArticleDto.builder()
+					.articleNo(a.getArticleNo())
+					.userId(a.getUserId())
+					.userRole(userIdList.get(a.getUserId()).getRole())
+					.subject(a.getSubject())
+					.hit(a.getHit())
+//					.registerTime(getDateStr(a.getRegisterTime(), BoardProperties.TIME_FORMAT))
+					.registerTime(sdf.format(a.getRegisterTime()))
+					.articlePropId(a.getArticleProp().getId())
+					.articlePropName(propMap.get(a.getArticleProp().getId()).getPropName())
+					.build();
+			articleDtoList.add(bad);
+		}
+
+		result.put("articleList", articleDtoList);
+		result.put("maxPage", pageArticleList.getTotalPages());
+		result.put("maxSize", pageArticleList.getTotalElements());
+		result.put("page", options.get("page"));
+		result.put("size", options.get("size"));
+		return result;
+	}
+	
 	@Override
 	@Transactional
 	public BoardArticleDto getNoticeDetail(String number) throws Exception {

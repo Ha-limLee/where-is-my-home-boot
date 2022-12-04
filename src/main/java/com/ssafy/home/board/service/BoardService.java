@@ -11,6 +11,8 @@ public interface BoardService {
 
 	public Map<String, Object> getBoardList(Map<String, String> options) throws Exception;
 
+	public Map<String, Object> getBoardListNotNotice(Map<String, String> options) throws Exception;
+	
 	public BoardArticleDto getNoticeDetail(String number) throws Exception;
 
 	public void addNotice(Map<String, String> options) throws Exception;
@@ -24,4 +26,5 @@ public interface BoardService {
 	public String getDateStr(Timestamp timestamp, String format) throws Exception;
 
 	int getTotalArticleNum() throws Exception;
+
 }
