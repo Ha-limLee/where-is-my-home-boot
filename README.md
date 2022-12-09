@@ -8,9 +8,9 @@
 ## 1. 개요
 ![image](https://user-images.githubusercontent.com/56950637/206682665-92fbdb48-c87e-499d-ae89-e499d3a88b22.png)
 
-좋은 부동산을 구하기 위한 부동산 서비스입니다.
-
+좋은 부동산을 구하기 위한 부동산 서비스입니다.<br />
 기간: 22.11.17(목) ~ 22.11.24(목)
+
 인원: [이하림](https://github.com/Ha-limLee)(프론트엔드), [박종수](https://github.com/Bell-Water)(백엔드)
 
 
