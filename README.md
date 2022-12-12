@@ -25,22 +25,43 @@
   뉴스는 화면에 1개씩 표시되며 일정시간이 지나면 해당 목록의 다음 뉴스로 자동으로 넘어갑니다.
 
 ### 2.2 게시판
-  #### 2.2.1 글 조회
+  #### 2.2.1 글 목록 조회
+  ![image](https://user-images.githubusercontent.com/56950637/207132701-07ae23ac-cf34-44ce-b9b9-739d96774108.png)
+
+게시글은 세가지 종류(공지사항, 질문, 일반)가 있습니다. 옵션설정을 통해 특정 종류의 게시글 리스트만 조회할 수 있습니다.
+admin 권한을 가진 유저가 글을 작성할 경우 작성자 옆에 (admin)표시가 붙습니다.
+
+  #### 2.2.2 글 개별 조회
+  ![image](https://user-images.githubusercontent.com/56950637/207132777-ef27a1c1-7f20-4a3b-80f5-be1056336d4e.png)
+
+글 목록에서 게시글을 선택하면 해당 게시글에 대한 내용과 게시글에 달린 댓글 리스트를 볼 수 있습니다.
+댓글도 글과 마찬가지로 admin유저가 작성한 댓글에는 작성자 옆에 (admin)표시가 붙도록 하였습니다.
+  #### 2.2.3 글 생성
+  ![image](https://user-images.githubusercontent.com/56950637/207132724-4c34b2c1-a61c-48df-8fb6-789a45b52ead.png)
   
-  #### 2.2.2 글 작성
-  
-  #### 2.2.3 글 수정
-  
+로그인 한 유저만 접근이 가능하며 admin권한을 가진 유저만 '공지사항'이 종류에 표시됩니다.
+
   #### 2.2.4 글 삭제
-  
-  #### 2.2.5 댓글 조회
-  
+  ![image](https://user-images.githubusercontent.com/56950637/207132757-733a5496-f968-415c-9bea-1622ea448e63.png)
+해당 글을 작성한 유저만 글을 삭제할 수 있습니다. 삭제하기 전 alert창을 통해 확인을 요청합니다.
+
+  #### 2.2.5 글 수정
+  ![image](https://user-images.githubusercontent.com/56950637/207132739-651e5e0d-f99f-4d31-955c-0c7ee817efc7.png)
+
+해당 글을 작성한 유저만 글을 수정할 수 있습니다.
+
   #### 2.2.6 댓글 생성
+  ![image](https://user-images.githubusercontent.com/56950637/207133610-c8b25d64-e92c-46e7-945c-dd4aae5e254a.png)
   
+  
+댓글 생성,수정,삭제도 글과 같은 원리도 작동합니다.
+
   #### 2.2.7 댓글 수정
-  
+  ![image](https://user-images.githubusercontent.com/56950637/207133601-bd5d3885-0651-4989-a024-136bdf0ecba3.png)
+
   #### 2.2.8 댓글 삭제
-  
+  ![image](https://user-images.githubusercontent.com/56950637/207133912-0f115a0a-c55d-4650-a1cc-83d887a7f2e1.png)
+
 
 ### 2.3 회원정보
   회원가입, 회원정보 조회, 회원정보 수정, 회원정보 탈퇴, 로그인, 로그아웃
@@ -70,7 +91,6 @@
   - MyBatis
   - MySQL
   - Amazon RDS
-  - 네이버 OPEN-API
 
 - 프론트엔드
   - Vue.js
